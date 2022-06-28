@@ -1,7 +1,9 @@
 package ec.ups.edu.Heladeria.servicios;
 
+import ec.ups.edu.Heladeria.controladores.UsuarioControlador;
 import ec.ups.edu.Heladeria.entidades.Usuario;
 import ec.ups.edu.Heladeria.repositorios.UsuarioRepositorio;
+import net.bytebuddy.implementation.bytecode.assign.TypeCasting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +45,9 @@ public class UsuarioServicio {
     public void delete(Long id){
 
         usuarioRepositorio.deleteById(id);
+    }
+    public Usuario iniciarsesion(String correo,String contrasenia){
+        return (Usuario) usuarioRepositorio.getUsuarioEncontrado(correo,contrasenia);
     }
 
 }

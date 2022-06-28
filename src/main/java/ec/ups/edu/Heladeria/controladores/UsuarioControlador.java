@@ -3,6 +3,7 @@ package ec.ups.edu.Heladeria.controladores;
 import ec.ups.edu.Heladeria.entidades.Usuario;
 import ec.ups.edu.Heladeria.entidades.peticiones.usuario.ActualizarUsuario;
 import ec.ups.edu.Heladeria.entidades.peticiones.usuario.CrearUsuario;
+import ec.ups.edu.Heladeria.entidades.peticiones.usuario.IniciarSesion;
 import ec.ups.edu.Heladeria.servicios.UsuarioNoEncontradoException;
 import ec.ups.edu.Heladeria.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +49,10 @@ public class UsuarioControlador {
         Usuario usuario = usuarioOptional.orElseThrow(UsuarioNoEncontradoException::new);
         return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
     }
-    @GetMapping("/iniciarSesion/{cedula}")
-    public ResponseEntity<Usuario> getUsuarioIiciado(@PathVariable String cedula){
-        Optional<Usuario> usuarioOptional = Optional.ofNullable(usuarioServicio.retrieveUsuarioByCedula(cedula));
+
+    @GetMapping("/iniciarSesion")
+    public ResponseEntity<Usuario> getUsuarioIiciado(@RequestBody  IniciarSesion iniciarS ){
+        Optional<Usuario> usuarioOptional = Optional.ofNullable(usuarioServicio.iniciarsesion(iniciarS.getCorreo(),iniciarS.getContrasenia()));
         Usuario usuario = usuarioOptional.orElseThrow(UsuarioNoEncontradoException::new);
         return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
     }
