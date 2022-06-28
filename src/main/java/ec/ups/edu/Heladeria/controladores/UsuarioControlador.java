@@ -57,7 +57,7 @@ public class UsuarioControlador {
         usuario.setApellido(crearUsuario.getApellido());
         usuario.setCorreo(crearUsuario.getCorreo());
         usuario.setContrasenia(crearUsuario.getContrasenia());
-        usuario.setTipo(crearUsuario.getTipo());
+        usuario.setTipoUS(crearUsuario.getTipo());
         usuario.setTelefono(crearUsuario.getTelefono());
         usuario.setDireccion(crearUsuario.getDireccion());
 
@@ -78,7 +78,7 @@ public class UsuarioControlador {
         usuarioEncontrado.setApellido(actualizarUsuario.getApellido());
         usuarioEncontrado.setCorreo(actualizarUsuario.getCorreo());
         usuarioEncontrado.setContrasenia(actualizarUsuario.getContrasenia());
-        usuarioEncontrado.setTipo(actualizarUsuario.getTipo());
+        usuarioEncontrado.setTipoUS(actualizarUsuario.getTipo());
         usuarioEncontrado.setTelefono(actualizarUsuario.getTelefono());
         usuarioEncontrado.setDireccion(actualizarUsuario.getDireccion());
 

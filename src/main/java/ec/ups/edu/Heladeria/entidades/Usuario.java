@@ -13,38 +13,38 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long codigo;
+    private long id;
 
     private String cedula;
     private String nombre;
     private String apellido;
     private String correo;
     private String contrasenia;
-    private String tipo;
+    private String tipoUS;
     private String telefono;
     private String direccion;
 
     public Usuario() {
     }
 
-    public Usuario(long codigo, String cedula, String nombre, String apellido, String correo, String contrasenia, String tipo, String telefono, String direccion) {
-        this.codigo = codigo;
+    public Usuario(long id, String cedula, String nombre, String apellido, String correo, String contrasenia, String tipoUS, String telefono, String direccion) {
+        this.id = id;
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.contrasenia = contrasenia;
-        this.tipo = tipo;
+        this.tipoUS = tipoUS;
         this.telefono = telefono;
         this.direccion = direccion;
     }
 
     public long getCodigo() {
-        return codigo;
+        return id;
     }
 
     public void setCodigo(long codigo) {
-        this.codigo = codigo;
+        this.id = codigo;
     }
 
     public String getCedula() {
@@ -87,12 +87,12 @@ public class Usuario {
         this.contrasenia = contrasenia;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getTipoUS() {
+        return tipoUS;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipoUS(String tipoUS) {
+        this.tipoUS = tipoUS;
     }
 
     public String getTelefono() {
@@ -116,24 +116,24 @@ public class Usuario {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        return codigo == usuario.codigo && cedula.equals(usuario.cedula) && nombre.equals(usuario.nombre) && apellido.equals(usuario.apellido) && correo.equals(usuario.correo) && contrasenia.equals(usuario.contrasenia) && tipo.equals(usuario.tipo) && telefono.equals(usuario.telefono) && direccion.equals(usuario.direccion);
+        return id == usuario.id && cedula.equals(usuario.cedula) && nombre.equals(usuario.nombre) && apellido.equals(usuario.apellido) && correo.equals(usuario.correo) && contrasenia.equals(usuario.contrasenia) && tipoUS.equals(usuario.tipoUS) && telefono.equals(usuario.telefono) && direccion.equals(usuario.direccion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(codigo, cedula, nombre, apellido, correo, contrasenia, tipo, telefono, direccion);
+        return Objects.hash(id, cedula, nombre, apellido, correo, contrasenia, tipoUS, telefono, direccion);
     }
 
     @Override
     public String toString() {
         return "Usuario{" +
-                "codigo=" + codigo +
+                "codigo=" + id +
                 ", cedula='" + cedula + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", correo='" + correo + '\'' +
                 ", contrasenia='" + contrasenia + '\'' +
-                ", tipo='" + tipo + '\'' +
+                ", tipoUS='" + tipoUS + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", direccion='" + direccion + '\'' +
                 '}';
