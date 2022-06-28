@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 
-public class Usuario {
+public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,21 +20,21 @@ public class Usuario {
     private String apellido;
     private String correo;
     private String contrasenia;
-    private String tipoUS;
+
     private String telefono;
     private String direccion;
 
-    public Usuario() {
+    public Cliente() {
     }
 
-    public Usuario(long id, String cedula, String nombre, String apellido, String correo, String contrasenia, String tipoUS, String telefono, String direccion) {
+    public Cliente(long id, String cedula, String nombre, String apellido, String correo, String contrasenia, String telefono, String direccion) {
         this.id = id;
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.contrasenia = contrasenia;
-        this.tipoUS = tipoUS;
+
         this.telefono = telefono;
         this.direccion = direccion;
     }
@@ -87,13 +87,7 @@ public class Usuario {
         this.contrasenia = contrasenia;
     }
 
-    public String getTipoUS() {
-        return tipoUS;
-    }
 
-    public void setTipoUS(String tipoUS) {
-        this.tipoUS = tipoUS;
-    }
 
     public String getTelefono() {
         return telefono;
@@ -115,25 +109,25 @@ public class Usuario {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Usuario usuario = (Usuario) o;
-        return id == usuario.id && cedula.equals(usuario.cedula) && nombre.equals(usuario.nombre) && apellido.equals(usuario.apellido) && correo.equals(usuario.correo) && contrasenia.equals(usuario.contrasenia) && tipoUS.equals(usuario.tipoUS) && telefono.equals(usuario.telefono) && direccion.equals(usuario.direccion);
+        Cliente cliente = (Cliente) o;
+        return id == cliente.id && cedula.equals(cliente.cedula) && nombre.equals(cliente.nombre) && apellido.equals(cliente.apellido) && correo.equals(cliente.correo) && contrasenia.equals(cliente.contrasenia)  && telefono.equals(cliente.telefono) && direccion.equals(cliente.direccion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cedula, nombre, apellido, correo, contrasenia, tipoUS, telefono, direccion);
+        return Objects.hash(id, cedula, nombre, apellido, correo, contrasenia, telefono, direccion);
     }
 
     @Override
     public String toString() {
-        return "Usuario{" +
+        return "Cliente{" +
                 "id=" + id +
                 ", cedula='" + cedula + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", correo='" + correo + '\'' +
                 ", contrasenia='" + contrasenia + '\'' +
-                ", tipoUS='" + tipoUS + '\'' +
+
                 ", telefono='" + telefono + '\'' +
                 ", direccion='" + direccion + '\'' +
                 '}';

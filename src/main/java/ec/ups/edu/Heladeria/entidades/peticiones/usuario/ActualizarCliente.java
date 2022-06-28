@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class CrearUsuario {
+public class ActualizarCliente {
 
+    @JsonProperty
+    private Long id;
     @JsonProperty
     private String cedula;
     @JsonProperty
@@ -16,12 +18,19 @@ public class CrearUsuario {
     private String correo;
     @JsonProperty
     private String contrasenia;
-    @JsonProperty
-    private String tipo;
+
     @JsonProperty
     private String telefono;
     @JsonProperty
     private String direccion;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long codigo) {
+        this.id = codigo;
+    }
 
     public String getCedula() {
         return cedula;
@@ -63,13 +72,6 @@ public class CrearUsuario {
         this.contrasenia = contrasenia;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
 
     public String getTelefono() {
         return telefono;
@@ -91,24 +93,25 @@ public class CrearUsuario {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CrearUsuario that = (CrearUsuario) o;
-        return cedula.equals(that.cedula) && nombre.equals(that.nombre) && apellido.equals(that.apellido) && correo.equals(that.correo) && contrasenia.equals(that.contrasenia) && tipo.equals(that.tipo) && telefono.equals(that.telefono) && direccion.equals(that.direccion);
+        ActualizarCliente that = (ActualizarCliente) o;
+        return id.equals(that.id) && cedula.equals(that.cedula) && nombre.equals(that.nombre) && apellido.equals(that.apellido) && correo.equals(that.correo) && contrasenia.equals(that.contrasenia) && telefono.equals(that.telefono) && direccion.equals(that.direccion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cedula, nombre, apellido, correo, contrasenia, tipo, telefono, direccion);
+        return Objects.hash(id, cedula, nombre, apellido, correo, contrasenia, telefono, direccion);
     }
 
     @Override
     public String toString() {
-        return "CrearUsuario{" +
-                "cedula='" + cedula + '\'' +
+        return "ActualizarCliente{" +
+                "id=" + id +
+                ", cedula='" + cedula + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", correo='" + correo + '\'' +
                 ", contrasenia='" + contrasenia + '\'' +
-                ", tipo='" + tipo + '\'' +
+
                 ", telefono='" + telefono + '\'' +
                 ", direccion='" + direccion + '\'' +
                 '}';
