@@ -1,35 +1,49 @@
-package ec.ups.edu.Heladeria.entidades.peticiones.usuario;
+package ec.ups.edu.Heladeria.entidades;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.util.Objects;
 
-public class ActualizarUsuario {
+@Entity
 
-    @JsonProperty
-    private Long id;
-    @JsonProperty
+public class Cliente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
     private String cedula;
-    @JsonProperty
     private String nombre;
-    @JsonProperty
     private String apellido;
-    @JsonProperty
     private String correo;
-    @JsonProperty
     private String contrasenia;
-    @JsonProperty
-    private String tipo;
-    @JsonProperty
+
     private String telefono;
-    @JsonProperty
     private String direccion;
 
-    public Long getId() {
+    public Cliente() {
+    }
+
+    public Cliente(long id, String cedula, String nombre, String apellido, String correo, String contrasenia, String telefono, String direccion) {
+        this.id = id;
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.contrasenia = contrasenia;
+
+        this.telefono = telefono;
+        this.direccion = direccion;
+    }
+
+    public long getCodigo() {
         return id;
     }
 
-    public void setId(Long codigo) {
+    public void setCodigo(long codigo) {
         this.id = codigo;
     }
 
@@ -73,13 +87,7 @@ public class ActualizarUsuario {
         this.contrasenia = contrasenia;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
 
     public String getTelefono() {
         return telefono;
@@ -101,25 +109,25 @@ public class ActualizarUsuario {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ActualizarUsuario that = (ActualizarUsuario) o;
-        return id.equals(that.id) && cedula.equals(that.cedula) && nombre.equals(that.nombre) && apellido.equals(that.apellido) && correo.equals(that.correo) && contrasenia.equals(that.contrasenia) && tipo.equals(that.tipo) && telefono.equals(that.telefono) && direccion.equals(that.direccion);
+        Cliente cliente = (Cliente) o;
+        return id == cliente.id && cedula.equals(cliente.cedula) && nombre.equals(cliente.nombre) && apellido.equals(cliente.apellido) && correo.equals(cliente.correo) && contrasenia.equals(cliente.contrasenia)  && telefono.equals(cliente.telefono) && direccion.equals(cliente.direccion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cedula, nombre, apellido, correo, contrasenia, tipo, telefono, direccion);
+        return Objects.hash(id, cedula, nombre, apellido, correo, contrasenia, telefono, direccion);
     }
 
     @Override
     public String toString() {
-        return "ActualizarUsuario{" +
+        return "Cliente{" +
                 "id=" + id +
                 ", cedula='" + cedula + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", correo='" + correo + '\'' +
                 ", contrasenia='" + contrasenia + '\'' +
-                ", tipo='" + tipo + '\'' +
+
                 ", telefono='" + telefono + '\'' +
                 ", direccion='" + direccion + '\'' +
                 '}';

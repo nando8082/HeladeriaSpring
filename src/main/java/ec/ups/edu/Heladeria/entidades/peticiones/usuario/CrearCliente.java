@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class CrearUsuario {
+public class CrearCliente {
 
     @JsonProperty
     private String cedula;
@@ -16,8 +16,6 @@ public class CrearUsuario {
     private String correo;
     @JsonProperty
     private String contrasenia;
-    @JsonProperty
-    private String tipo;
     @JsonProperty
     private String telefono;
     @JsonProperty
@@ -63,13 +61,7 @@ public class CrearUsuario {
         this.contrasenia = contrasenia;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
 
     public String getTelefono() {
         return telefono;
@@ -91,24 +83,24 @@ public class CrearUsuario {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CrearUsuario that = (CrearUsuario) o;
-        return cedula.equals(that.cedula) && nombre.equals(that.nombre) && apellido.equals(that.apellido) && correo.equals(that.correo) && contrasenia.equals(that.contrasenia) && tipo.equals(that.tipo) && telefono.equals(that.telefono) && direccion.equals(that.direccion);
+        CrearCliente that = (CrearCliente) o;
+        return cedula.equals(that.cedula) && nombre.equals(that.nombre) && apellido.equals(that.apellido) && correo.equals(that.correo) && contrasenia.equals(that.contrasenia)  && telefono.equals(that.telefono) && direccion.equals(that.direccion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cedula, nombre, apellido, correo, contrasenia, tipo, telefono, direccion);
+        return Objects.hash(cedula, nombre, apellido, correo, contrasenia, telefono, direccion);
     }
 
     @Override
     public String toString() {
-        return "CrearUsuario{" +
+        return "CrearCliente{" +
                 "cedula='" + cedula + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", correo='" + correo + '\'' +
                 ", contrasenia='" + contrasenia + '\'' +
-                ", tipo='" + tipo + '\'' +
+
                 ", telefono='" + telefono + '\'' +
                 ", direccion='" + direccion + '\'' +
                 '}';
