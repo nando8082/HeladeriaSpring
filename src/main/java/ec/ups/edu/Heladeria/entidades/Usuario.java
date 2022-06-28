@@ -39,12 +39,12 @@ public class Usuario {
         this.direccion = direccion;
     }
 
-    public long getCodigo() {
+    public long getId() {
         return id;
     }
 
-    public void setCodigo(long codigo) {
-        this.id = codigo;
+    public void setId(long codigo) {
+        this.id = id;
     }
 
     public String getCedula() {
