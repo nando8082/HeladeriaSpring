@@ -48,6 +48,12 @@ public class UsuarioControlador {
         Usuario usuario = usuarioOptional.orElseThrow(UsuarioNoEncontradoException::new);
         return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
     }
+    @GetMapping("/iniciarSesion/{cedula}")
+    public ResponseEntity<Usuario> getUsuarioIiciado(@PathVariable String cedula){
+        Optional<Usuario> usuarioOptional = Optional.ofNullable(usuarioServicio.retrieveUsuarioByCedula(cedula));
+        Usuario usuario = usuarioOptional.orElseThrow(UsuarioNoEncontradoException::new);
+        return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+    }
 
     @PostMapping("/usuario/create")
     public ResponseEntity<Usuario> createUsuario(@RequestBody CrearUsuario crearUsuario){
