@@ -19,8 +19,8 @@ public class UsuarioServicio {
         return usuario;
     }
 
-    public String retrieveUsuarioNombreByCodigo(Long codigo) {
-        return usuarioRepositorio.findUsuarioNombreByCodigo(codigo);
+    public String retrieveUsuarioNombreById(Long id) {
+        return usuarioRepositorio.findUsuarioNombreById(id);
     }
 
     public List<String> retrieveAllNombres(){
@@ -31,8 +31,8 @@ public class UsuarioServicio {
         return (Usuario) usuarioRepositorio.findUsuarioByCedula(cedula);
     }
 
-    public Optional<Usuario> findByCodigo(Long codigo){
-        return (Optional<Usuario>) usuarioRepositorio.findById(codigo);
+    public Optional<Usuario> findById(Long id){
+        return (Optional<Usuario>) usuarioRepositorio.findById(id);
     }
 
     public void save(Usuario usuario){
@@ -40,9 +40,9 @@ public class UsuarioServicio {
         usuarioRepositorio.save(usuario);
     }
 
-    public void delete(Long codigo){
+    public void delete(Long id){
 
-        usuarioRepositorio.deleteById(codigo);
+        usuarioRepositorio.deleteById(id);
     }
 
 }

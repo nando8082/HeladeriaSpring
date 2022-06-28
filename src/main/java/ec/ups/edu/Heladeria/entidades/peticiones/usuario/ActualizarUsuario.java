@@ -7,7 +7,7 @@ import java.util.Objects;
 public class ActualizarUsuario {
 
     @JsonProperty
-    private Long codigo;
+    private Long id;
     @JsonProperty
     private String cedula;
     @JsonProperty
@@ -25,12 +25,12 @@ public class ActualizarUsuario {
     @JsonProperty
     private String direccion;
 
-    public Long getCodigo() {
-        return codigo;
+    public Long getId() {
+        return id;
     }
 
-    public void setCodigo(Long codigo) {
-        this.codigo = codigo;
+    public void setId(Long codigo) {
+        this.id = codigo;
     }
 
     public String getCedula() {
@@ -102,18 +102,18 @@ public class ActualizarUsuario {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ActualizarUsuario that = (ActualizarUsuario) o;
-        return codigo.equals(that.codigo) && cedula.equals(that.cedula) && nombre.equals(that.nombre) && apellido.equals(that.apellido) && correo.equals(that.correo) && contrasenia.equals(that.contrasenia) && tipo.equals(that.tipo) && telefono.equals(that.telefono) && direccion.equals(that.direccion);
+        return id.equals(that.id) && cedula.equals(that.cedula) && nombre.equals(that.nombre) && apellido.equals(that.apellido) && correo.equals(that.correo) && contrasenia.equals(that.contrasenia) && tipo.equals(that.tipo) && telefono.equals(that.telefono) && direccion.equals(that.direccion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(codigo, cedula, nombre, apellido, correo, contrasenia, tipo, telefono, direccion);
+        return Objects.hash(id, cedula, nombre, apellido, correo, contrasenia, tipo, telefono, direccion);
     }
 
     @Override
     public String toString() {
         return "ActualizarUsuario{" +
-                "codigo=" + codigo +
+                "id=" + id +
                 ", cedula='" + cedula + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +

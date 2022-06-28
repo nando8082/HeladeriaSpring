@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface UsuarioRepositorio extends CrudRepository<Usuario, Long> {
 
-    @Query("select u.codigo, u.nombre from Usuario u where u.codigo = :codigo")
-    String findUsuarioNombreByCodigo(Long codigo);
+    @Query("select u.id, u.nombre from Usuario u where u.id = :id")
+    String findUsuarioNombreById(Long id);
 
     @Query("select u.nombre from Usuario u")
     List<String> findAllNombre();

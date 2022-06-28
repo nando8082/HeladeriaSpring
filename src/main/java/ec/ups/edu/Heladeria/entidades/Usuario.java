@@ -127,7 +127,7 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario{" +
-                "codigo=" + id +
+                "id=" + id +
                 ", cedula='" + cedula + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +

@@ -32,7 +32,7 @@ public class UsuarioControlador {
 
     @GetMapping("/usuarios/{codigo}")
     public ResponseEntity<String> getNombresByCodigo(@PathVariable Long codigo){
-        String nombres = usuarioServicio.retrieveUsuarioNombreByCodigo(codigo);
+        String nombres = usuarioServicio.retrieveUsuarioNombreById(codigo);
         return new ResponseEntity<String>(nombres, HttpStatus.OK);
     }
 
@@ -68,7 +68,7 @@ public class UsuarioControlador {
 
     @PutMapping("/usuario/update")
     public ResponseEntity<Usuario> updateUsuario(@RequestBody ActualizarUsuario actualizarUsuario){
-        Optional<Usuario> usuarioOptional = usuarioServicio.findByCodigo(actualizarUsuario.getCodigo());
+        Optional<Usuario> usuarioOptional = usuarioServicio.findById(actualizarUsuario.getId());
         if(usuarioOptional.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
