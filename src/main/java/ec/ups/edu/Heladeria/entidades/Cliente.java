@@ -1,10 +1,8 @@
 package ec.ups.edu.Heladeria.entidades;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +21,9 @@ public class Cliente {
 
     private String telefono;
     private String direccion;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<Tarjeta> tarjetas;
 
     public Cliente() {
     }
@@ -43,7 +44,7 @@ public class Cliente {
         return id;
     }
 
-    public void setId(long codigo) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -87,8 +88,6 @@ public class Cliente {
         this.contrasenia = contrasenia;
     }
 
-
-
     public String getTelefono() {
         return telefono;
     }
@@ -103,6 +102,14 @@ public class Cliente {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public List<Tarjeta> getTarjetas() {
+        return tarjetas;
+    }
+
+    public void setTarjetas(List<Tarjeta> tarjetas) {
+        this.tarjetas = tarjetas;
     }
 
     @Override

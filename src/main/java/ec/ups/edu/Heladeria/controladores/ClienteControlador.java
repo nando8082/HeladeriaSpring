@@ -32,8 +32,8 @@ public class ClienteControlador {
     }
 
     @GetMapping("/cliente/{codigo}")
-    public ResponseEntity<String> getNombresByCodigo(@PathVariable Long codigo){
-        String nombres = clienteServicio.retrieveUsuarioNombreById(codigo);
+    public ResponseEntity<String> getNombresByCodigo(@PathVariable Long id){
+        String nombres = clienteServicio.retrieveUsuarioNombreById(id);
         return new ResponseEntity<String>(nombres, HttpStatus.OK);
     }
 
@@ -97,8 +97,8 @@ public class ClienteControlador {
 
 
     @DeleteMapping("/cliente/delete/{codigo}")
-    public ResponseEntity<String> deletePersona(@PathVariable Long codigo){
-        clienteServicio.delete(codigo);
+    public ResponseEntity<String> deletePersona(@PathVariable Long id){
+        clienteServicio.delete(id);
 
         return ResponseEntity.ok("Persona Eliminada Correctamente");
     }
