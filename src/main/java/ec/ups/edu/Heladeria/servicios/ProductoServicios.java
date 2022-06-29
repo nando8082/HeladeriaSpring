@@ -15,4 +15,25 @@ public class ProductoServicios {
     public List<Producto> findAll(){
         return (List<Producto>) productoRepositorio.findAll();
     }
+
+    public List<String> retrieveProductosSucursal(Long id){
+        return (List<String>) productoRepositorio.findProductosSucursal(id);
+    }
+
+    public List<String> retrieveAllNombre(){
+        return (List<String>) productoRepositorio.findAllNombre();
+    }
+
+    public Producto retrieveAllProducto(Long id){
+
+        return (Producto) productoRepositorio.findAllProducto(id);
+    }
+
+    public List<String> retrievePorPrecio(double precio){
+
+        return (List<String>) productoRepositorio.findPorPrecio(precio);
+    }
+
+    public void save(Producto producto){
+        productoRepositorio.save(producto);}
 }
