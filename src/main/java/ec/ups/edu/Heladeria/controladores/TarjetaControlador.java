@@ -3,14 +3,17 @@ package ec.ups.edu.Heladeria.controladores;
 import ec.ups.edu.Heladeria.entidades.Cliente;
 import ec.ups.edu.Heladeria.entidades.Tarjeta;
 import ec.ups.edu.Heladeria.entidades.peticiones.tarjeta.CrearTarjeta;
+import ec.ups.edu.Heladeria.entidades.peticiones.usuario.ActualizarCliente;
+import ec.ups.edu.Heladeria.servicios.ClienteNoEncontradoException;
 import ec.ups.edu.Heladeria.servicios.ClienteServicio;
+import ec.ups.edu.Heladeria.servicios.TarjetaNoEncontradaException;
 import ec.ups.edu.Heladeria.servicios.TarjetaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -50,7 +53,19 @@ public class TarjetaControlador {
         return ResponseEntity.ok(tarjeta);
     }
 
+    @GetMapping("/tarjeta/{numTarjeta}")
+    public ResponseEntity<Tarjeta> getTarjetaBynumTarjeta(@PathVariable int numTarjeta){
+        Optional<Tarjeta> tarjetaOptional = Optional.ofNullable(tarjetaServicio.retrieveTarjetaBynumTarjeta(numTarjeta));
+        Tarjeta tarjeta = tarjetaOptional.orElseThrow(TarjetaNoEncontradaException::new);
+        return new ResponseEntity<Tarjeta>(tarjeta, HttpStatus.OK);
+    }
 
+    @GetMapping("/tarjetas")
+    public ResponseEntity<List<Tarjeta>> getAllUsuarios(){
+        List<Tarjeta> listaTarjetas = tarjetaServicio.findAll();
+
+        return new ResponseEntity<List<Tarjeta>>(listaTarjetas, HttpStatus.OK);
+    }
 
 
 }
