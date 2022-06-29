@@ -19,7 +19,7 @@ public class Sucursal implements Serializable {
     private String ciudad;
     private String correo;
     @ManyToOne
-    @JoinColumn(nullable = true)
+    @JoinColumn(nullable = true, name = "entidad_principal_id")
     @JsonIgnore
     private EntidadPrincipal entidadPrincipal;
 
