@@ -1,5 +1,7 @@
 package ec.ups.edu.Heladeria.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -21,6 +23,7 @@ public class Producto implements Serializable {
 
     @ManyToOne
     @JoinColumn(nullable = true)
+    @JsonIgnore
     private Sucursal sucursal;
 
     public Producto() {
@@ -116,6 +119,6 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", marca=" + marca + ", stock=" + stock + ", estado=" + estado + ", precio=" + precio + ", cantidad=" + cantidad +  ", sucursal=" + sucursal + '}';
+        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", marca=" + marca + ", stock=" + stock + ", estado=" + estado + ", precio=" + precio +   ", sucursal=" + sucursal + '}';
     }
 }
