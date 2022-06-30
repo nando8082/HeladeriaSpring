@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TarjetaServicio {
@@ -17,6 +18,9 @@ public class TarjetaServicio {
     public void save(Tarjeta tarjeta){
 
         tarjetaRepositorio.save(tarjeta);
+    }
+    public Optional<Tarjeta> findById(long id){
+        return (Optional<Tarjeta>) tarjetaRepositorio.findById(id);
     }
 
     public Tarjeta retrieveTarjetaBynumTarjeta(int numTarjeta){

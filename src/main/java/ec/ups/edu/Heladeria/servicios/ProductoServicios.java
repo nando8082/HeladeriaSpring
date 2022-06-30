@@ -1,11 +1,13 @@
 package ec.ups.edu.Heladeria.servicios;
 
+import ec.ups.edu.Heladeria.entidades.Pedido;
 import ec.ups.edu.Heladeria.entidades.Producto;
 import ec.ups.edu.Heladeria.repositorios.ProductoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductoServicios {
@@ -18,6 +20,9 @@ public class ProductoServicios {
 
     public List<Producto> retrieveProductosSucursal(Long id){
         return (List<Producto>) productoRepositorio.findProductosSucursal(id);
+    }
+    public Optional<Producto> findById(long id){
+        return (Optional<Producto>) productoRepositorio.findById(id);
     }
 
     public List<String> retrieveAllNombre(){

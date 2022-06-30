@@ -1,5 +1,6 @@
 package ec.ups.edu.Heladeria.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class Cliente {
     private String direccion;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Tarjeta> tarjetas;
 
     public Cliente() {
