@@ -8,9 +8,8 @@ import java.util.List;
 
 public interface ProductoRepositorio extends CrudRepository<Producto, Long> {
 
-    @Query("SELECT p.id, p.nombre, p.descripcion , p.stock, p.precio " +
-            "FROM Sucursal s, Producto p where p.sucursal = :id")
-    List<String> findProductosSucursal(Long id);
+    @Query("SELECT p FROM Producto p,Sucursal s where  p.sucursal.id =:id and s.id=:id")
+    List<Producto> findProductosSucursal(Long id);
 
     @Query("select p from Producto p where p.id = :id")
     Producto findAllProducto(Long id);

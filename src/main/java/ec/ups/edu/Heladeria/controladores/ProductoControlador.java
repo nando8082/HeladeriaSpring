@@ -32,10 +32,10 @@ public class ProductoControlador {
     }
 
     @GetMapping("/productos/sucursal/{id}")
-    public ResponseEntity<List<String>> getProductosSucursal(@PathVariable Long id){
-        List<String> listadoSucursal = productoServicios.retrieveProductosSucursal(id);
+    public ResponseEntity<List<Producto>> getProductosSucursal(@PathVariable Long id){
+        List<Producto> listadoSucursal = productoServicios.retrieveProductosSucursal(id);
 
-        return new ResponseEntity<List<String>>(listadoSucursal, HttpStatus.OK);
+        return new ResponseEntity<List<Producto>>(listadoSucursal, HttpStatus.OK);
     }
 
     @GetMapping("/producto/nombre")

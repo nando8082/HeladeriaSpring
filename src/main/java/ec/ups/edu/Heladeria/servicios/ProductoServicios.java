@@ -16,8 +16,8 @@ public class ProductoServicios {
         return (List<Producto>) productoRepositorio.findAll();
     }
 
-    public List<String> retrieveProductosSucursal(Long id){
-        return (List<String>) productoRepositorio.findProductosSucursal(id);
+    public List<Producto> retrieveProductosSucursal(Long id){
+        return (List<Producto>) productoRepositorio.findProductosSucursal(id);
     }
 
     public List<String> retrieveAllNombre(){
