@@ -2,11 +2,12 @@ package ec.ups.edu.Heladeria.entidades.peticiones.tarjeta;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDate;
 import java.util.Date;
 
-public class CrearTarjeta {
+public class ActualizarTarjeta {
 
+    @JsonProperty
+    private Long id;
     @JsonProperty
     private String nombreTitular;
     @JsonProperty
@@ -18,10 +19,13 @@ public class CrearTarjeta {
     @JsonProperty
     private String tipo;
 
-    @JsonProperty
-    private Long idUsuario;
 
-    public CrearTarjeta() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombreTitular() {
@@ -62,13 +66,5 @@ public class CrearTarjeta {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
     }
 }

@@ -46,10 +46,6 @@ public class CrearPedido {
         this.longitud = longitud;
     }
 
-
-
-   
-
     public String getEstado() {
         return estado;
     }

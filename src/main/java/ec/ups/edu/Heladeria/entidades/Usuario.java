@@ -1,6 +1,8 @@
 package ec.ups.edu.Heladeria.entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 
-public class Cliente {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,21 +25,20 @@ public class Cliente {
     private String telefono;
     private String direccion;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
+    //@JsonIgnore
     private List<Tarjeta> tarjetas;
 
-    public Cliente() {
+    public Usuario() {
     }
 
-    public Cliente(long id, String cedula, String nombre, String apellido, String correo, String contrasenia, String telefono, String direccion) {
+    public Usuario(long id, String cedula, String nombre, String apellido, String correo, String contrasenia, String telefono, String direccion) {
         this.id = id;
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.contrasenia = contrasenia;
-
         this.telefono = telefono;
         this.direccion = direccion;
     }
@@ -106,6 +107,7 @@ public class Cliente {
         this.direccion = direccion;
     }
 
+    @JsonManagedReference
     public List<Tarjeta> getTarjetas() {
         return tarjetas;
     }
@@ -118,8 +120,8 @@ public class Cliente {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Cliente cliente = (Cliente) o;
-        return id == cliente.id && cedula.equals(cliente.cedula) && nombre.equals(cliente.nombre) && apellido.equals(cliente.apellido) && correo.equals(cliente.correo) && contrasenia.equals(cliente.contrasenia)  && telefono.equals(cliente.telefono) && direccion.equals(cliente.direccion);
+        Usuario usuario = (Usuario) o;
+        return id == usuario.id && cedula.equals(usuario.cedula) && nombre.equals(usuario.nombre) && apellido.equals(usuario.apellido) && correo.equals(usuario.correo) && contrasenia.equals(usuario.contrasenia)  && telefono.equals(usuario.telefono) && direccion.equals(usuario.direccion);
     }
 
     @Override

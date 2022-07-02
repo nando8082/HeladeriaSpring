@@ -3,7 +3,6 @@ package ec.ups.edu.Heladeria.entidades;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +13,7 @@ public class Pedido implements Serializable {
     private long id;
     @OneToOne
     @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    private Usuario usuario;
     private double latitud;
     private double longitud;
     private String estado;
@@ -27,9 +26,9 @@ public class Pedido implements Serializable {
     public Pedido() {
     }
 
-    public Pedido(long id, Cliente cliente, double latitud, double longitud, String estado, double costoEnvio, List<Detalle> detalles, Tarjeta tarjeta) {
+    public Pedido(long id, Usuario usuario, double latitud, double longitud, String estado, double costoEnvio, List<Detalle> detalles, Tarjeta tarjeta) {
         this.id = id;
-        this.cliente = cliente;
+        this.usuario = usuario;
         this.latitud = latitud;
         this.longitud = longitud;
         this.estado = estado;
@@ -48,12 +47,12 @@ public class Pedido implements Serializable {
         this.id = id;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Usuario getCliente() {
+        return usuario;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setCliente(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public double getLatitud() {

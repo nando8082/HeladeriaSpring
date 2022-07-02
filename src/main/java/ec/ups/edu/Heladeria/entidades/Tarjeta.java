@@ -1,8 +1,9 @@
 package ec.ups.edu.Heladeria.entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import java.time.LocalDate;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -18,15 +19,17 @@ public class Tarjeta {
     private int numTarjeta;
     @Column(name = "fecha_Cducidad")
     private Date fechaCducidad;
+
     @Column(name = "codigo_Cvv")
+    @JsonIgnore
     private int codigoCvv;
     @Column(name = "tipo")
     private String tipo;
 
     @ManyToOne
     @JoinColumn
-    @JsonIgnore
-    private Cliente cliente;
+    //@JsonIgnore
+    private Usuario usuario;
 
     public Tarjeta() {
     }
@@ -79,12 +82,13 @@ public class Tarjeta {
         this.tipo = tipo;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    @JsonBackReference
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override
@@ -109,7 +113,7 @@ public class Tarjeta {
                 ", fechaCducidad=" + fechaCducidad +
                 ", codigoCvv=" + codigoCvv +
                 ", tipo='" + tipo + '\'' +
-                ", cliente=" + cliente +
+                ", usuario=" + usuario +
                 '}';
     }
 }

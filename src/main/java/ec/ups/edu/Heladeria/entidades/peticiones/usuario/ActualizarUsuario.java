@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class ActualizarCliente {
+public class ActualizarUsuario {
 
     @JsonProperty
     private Long id;
@@ -93,7 +93,7 @@ public class ActualizarCliente {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ActualizarCliente that = (ActualizarCliente) o;
+        ActualizarUsuario that = (ActualizarUsuario) o;
         return id.equals(that.id) && cedula.equals(that.cedula) && nombre.equals(that.nombre) && apellido.equals(that.apellido) && correo.equals(that.correo) && contrasenia.equals(that.contrasenia) && telefono.equals(that.telefono) && direccion.equals(that.direccion);
     }
 

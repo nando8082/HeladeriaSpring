@@ -1,11 +1,11 @@
 package ec.ups.edu.Heladeria.controladores;
 
-import ec.ups.edu.Heladeria.entidades.Cliente;
+import ec.ups.edu.Heladeria.entidades.Usuario;
 import ec.ups.edu.Heladeria.entidades.Tarjeta;
+import ec.ups.edu.Heladeria.entidades.peticiones.tarjeta.ActualizarTarjeta;
 import ec.ups.edu.Heladeria.entidades.peticiones.tarjeta.CrearTarjeta;
-import ec.ups.edu.Heladeria.entidades.peticiones.usuario.ActualizarCliente;
-import ec.ups.edu.Heladeria.servicios.ClienteNoEncontradoException;
-import ec.ups.edu.Heladeria.servicios.ClienteServicio;
+import ec.ups.edu.Heladeria.entidades.peticiones.usuario.ActualizarUsuario;
+import ec.ups.edu.Heladeria.servicios.UsuarioServicio;
 import ec.ups.edu.Heladeria.servicios.TarjetaNoEncontradaException;
 import ec.ups.edu.Heladeria.servicios.TarjetaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,11 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("tarjeta")
 public class TarjetaControlador {
 
     private TarjetaServicio tarjetaServicio;
-    private ClienteServicio clienteServicio;
+    private UsuarioServicio usuarioServicio;
 
     @Autowired
     public void setTarjetaServicio(TarjetaServicio tarjetaServicio){
@@ -28,16 +29,18 @@ public class TarjetaControlador {
     }
 
     @Autowired
-    public void setClienteServicio(ClienteServicio clienteServicio) {
-        this.clienteServicio = clienteServicio;
+    public void setClienteServicio(UsuarioServicio usuarioServicio) {
+        this.usuarioServicio = usuarioServicio;
     }
 
-    @PostMapping("/tarjeta/create")
+
+    //Crear Tarjeta
+    @PostMapping("/create")
     public ResponseEntity<Tarjeta> createTarjeta(@RequestBody CrearTarjeta crearTarjeta){
 
-        Optional<Cliente> cliente = clienteServicio.findById(crearTarjeta.getIdCliente());
+        Optional<Usuario> usuario = usuarioServicio.findById(crearTarjeta.getIdUsuario());
 
-        if (cliente.isEmpty()){
+        if (usuario.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
 
@@ -47,24 +50,57 @@ public class TarjetaControlador {
         tarjeta.setFechaCducidad(crearTarjeta.getFechaCducidad());
         tarjeta.setCodigoCvv(crearTarjeta.getCodigoCvv());
         tarjeta.setTipo(crearTarjeta.getTipo());
-        tarjeta.setCliente(cliente.get());
+        tarjeta.setUsuario(usuario.get());
 
         tarjetaServicio.save(tarjeta);
         return ResponseEntity.ok(tarjeta);
     }
 
-    @GetMapping("/tarjeta/{numTarjeta}")
+    //Buscar por número de tarjeta
+
+    @GetMapping("/{numTarjeta}")
     public ResponseEntity<Tarjeta> getTarjetaBynumTarjeta(@PathVariable int numTarjeta){
         Optional<Tarjeta> tarjetaOptional = Optional.ofNullable(tarjetaServicio.retrieveTarjetaBynumTarjeta(numTarjeta));
         Tarjeta tarjeta = tarjetaOptional.orElseThrow(TarjetaNoEncontradaException::new);
         return new ResponseEntity<Tarjeta>(tarjeta, HttpStatus.OK);
     }
 
-    @GetMapping("/tarjetas")
-    public ResponseEntity<List<Tarjeta>> getAllUsuarios(){
+    //Listar todas las tarjetas
+
+    @GetMapping
+    public ResponseEntity<List<Tarjeta>> getAllTarjetas(){
         List<Tarjeta> listaTarjetas = tarjetaServicio.findAll();
 
         return new ResponseEntity<List<Tarjeta>>(listaTarjetas, HttpStatus.OK);
+    }
+
+
+    //Eliminar Tarjeta
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteTarjeta(@PathVariable Long id){
+        tarjetaServicio.delete(id);
+
+        return ResponseEntity.ok("Tarjeta Eliminada Correctamente");
+    }
+
+    //Actualizar Tarjeta
+
+    @PutMapping("/update")
+    public ResponseEntity<Tarjeta> updateTarjeta(@RequestBody ActualizarTarjeta actualizarTarjeta){
+        Optional<Tarjeta> tarjetaOptional = tarjetaServicio.findById(actualizarTarjeta.getId());
+        if(tarjetaOptional.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        Tarjeta tarjetaEncontrada = tarjetaOptional.get();
+        tarjetaEncontrada.setNombreTitular(actualizarTarjeta.getNombreTitular());
+        tarjetaEncontrada.setNumTarjeta(actualizarTarjeta.getNumTarjeta());
+        tarjetaEncontrada.setFechaCducidad(actualizarTarjeta.getFechaCducidad());
+        tarjetaEncontrada.setCodigoCvv(actualizarTarjeta.getCodigoCvv());
+        tarjetaEncontrada.setTipo(actualizarTarjeta.getTipo());
+
+        tarjetaServicio.save(tarjetaEncontrada);
+
+        return ResponseEntity.ok(tarjetaEncontrada);
     }
 
 

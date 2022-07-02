@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class CrearCliente {
+public class CrearUsuario {
 
     @JsonProperty
     private String cedula;
@@ -61,8 +61,6 @@ public class CrearCliente {
         this.contrasenia = contrasenia;
     }
 
-
-
     public String getTelefono() {
         return telefono;
     }
@@ -83,7 +81,7 @@ public class CrearCliente {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CrearCliente that = (CrearCliente) o;
+        CrearUsuario that = (CrearUsuario) o;
         return cedula.equals(that.cedula) && nombre.equals(that.nombre) && apellido.equals(that.apellido) && correo.equals(that.correo) && contrasenia.equals(that.contrasenia)  && telefono.equals(that.telefono) && direccion.equals(that.direccion);
     }
 

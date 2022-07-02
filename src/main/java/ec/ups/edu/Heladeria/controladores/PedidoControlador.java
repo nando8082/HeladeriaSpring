@@ -3,7 +3,7 @@ package ec.ups.edu.Heladeria.controladores;
 import ec.ups.edu.Heladeria.entidades.*;
 import ec.ups.edu.Heladeria.entidades.peticiones.pedido.ActualizarPedido;
 import ec.ups.edu.Heladeria.entidades.peticiones.pedido.CrearPedido;
-import ec.ups.edu.Heladeria.servicios.ClienteServicio;
+import ec.ups.edu.Heladeria.servicios.UsuarioServicio;
 import ec.ups.edu.Heladeria.servicios.PedidoNoEncontradoException;
 import ec.ups.edu.Heladeria.servicios.PedidoServicio;
 import ec.ups.edu.Heladeria.servicios.TarjetaServicio;
@@ -19,7 +19,7 @@ import java.util.Optional;
 public class PedidoControlador {
 
     private PedidoServicio pedidoServicio;
-    private ClienteServicio clienteServicio;
+    private UsuarioServicio usuarioServicio;
     private TarjetaServicio tarjetaServicio;
 
     @Autowired //inyeccion de dependencia
@@ -27,8 +27,8 @@ public class PedidoControlador {
         this.pedidoServicio = pedidoServicio;
     }
     @Autowired
-    public void setClienteServicio(ClienteServicio clienteServicio) {
-        this.clienteServicio = clienteServicio;
+    public void setClienteServicio(UsuarioServicio usuarioServicio) {
+        this.usuarioServicio = usuarioServicio;
     }
     @Autowired
     public void setTarjetaServicio(TarjetaServicio tarjetaServicio) {
@@ -48,7 +48,7 @@ public class PedidoControlador {
 
     @PostMapping("/pedido/create") //crear Pedido
     public ResponseEntity<Pedido> createPedido(@RequestBody CrearPedido crearPedido) {
-        Optional<Cliente> clineteOptional = clienteServicio.findById(crearPedido.getIdCliente());
+        Optional<Usuario> clineteOptional = usuarioServicio.findById(crearPedido.getIdCliente());
         if(clineteOptional.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
@@ -77,7 +77,7 @@ public class PedidoControlador {
             Pedido pedido =pedidoOptional.orElseThrow(PedidoNoEncontradoException::new);
             return new ResponseEntity <Pedido>(pedido,HttpStatus.OK);
         }
-        Optional<Cliente> clineteOptional = clienteServicio.findById(actualizarPedido.getIdCliente());
+        Optional<Usuario> clineteOptional = usuarioServicio.findById(actualizarPedido.getIdCliente());
         if(clineteOptional.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
