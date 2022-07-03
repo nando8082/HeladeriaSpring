@@ -1,11 +1,12 @@
 package ec.ups.edu.Heladeria.controladores;
 
-import ec.ups.edu.Heladeria.entidades.Usuario;
+import ec.ups.edu.Heladeria.entidades.Cliente;
 import ec.ups.edu.Heladeria.entidades.peticiones.usuario.ActualizarUsuario;
 import ec.ups.edu.Heladeria.entidades.peticiones.usuario.CrearUsuario;
 import ec.ups.edu.Heladeria.entidades.peticiones.usuario.IniciarSesion;
 import ec.ups.edu.Heladeria.servicios.UsuarioNoEncontradoException;
 import ec.ups.edu.Heladeria.servicios.UsuarioServicio;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +26,12 @@ public class UsuarioControlador {
         this.usuarioServicio = usuarioServicio;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Usuario>> getAllUsuarios(){
-        List<Usuario> listaUsuarios = usuarioServicio.findAll();
+    @GetMapping("/myuser")
+    public ResponseEntity<Optional<Cliente>> getAllUsuarios(HttpSession httpSession){
+       long id = (long) httpSession.getAttribute("idCliente");
+        Optional<Cliente> listaClientes = usuarioServicio.findById(id);
 
-        return new ResponseEntity<List<Usuario>>(listaUsuarios, HttpStatus.OK);
+        return new ResponseEntity<Optional<Cliente>>(listaClientes, HttpStatus.OK);
     }
 
     @GetMapping("/{codigo}")
@@ -44,55 +46,54 @@ public class UsuarioControlador {
         return new ResponseEntity<List<String>>(listaNombres, HttpStatus.OK);
     }
 
-    @GetMapping("/{cedula}")
-    public ResponseEntity<Usuario> getUsuarioByCedula(@PathVariable String cedula){
-        Optional<Usuario> usuarioOptional = Optional.ofNullable(usuarioServicio.retrieveUsuarioByCedula(cedula));
-        Usuario usuario = usuarioOptional.orElseThrow(UsuarioNoEncontradoException::new);
-        return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+    @GetMapping("/cedula/{cedula}")
+    public ResponseEntity<Cliente> getUsuarioByCedula(@PathVariable String cedula){
+        Optional<Cliente> usuarioOptional = Optional.ofNullable(usuarioServicio.retrieveUsuarioByCedula(cedula));
+        Cliente cliente = usuarioOptional.orElseThrow(UsuarioNoEncontradoException::new);
+        return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
     }
 
     @GetMapping("/iniciarSesion")
-    public ResponseEntity<Usuario> getUsuarioIiciado(@RequestBody  IniciarSesion iniciarS ){
-        Optional<Usuario> usuarioOptional = Optional.ofNullable(usuarioServicio.iniciarsesion(iniciarS.getCorreo(),iniciarS.getContrasenia()));
-        Usuario usuario = usuarioOptional.orElseThrow(UsuarioNoEncontradoException::new);
-        return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+    public ResponseEntity<Cliente> getUsuarioIiciado(@RequestBody  IniciarSesion iniciarS, HttpSession httpSession){
+
+        Optional<Cliente> usuarioOptional = Optional.ofNullable(usuarioServicio.iniciarsesion(iniciarS.getCorreo(),iniciarS.getContrasenia()));
+        httpSession.setAttribute("idCliente",usuarioOptional.get().getId());
+        Cliente cliente = usuarioOptional.orElseThrow(UsuarioNoEncontradoException::new);
+        return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Usuario> createUsuario(@RequestBody CrearUsuario crearUsuario){
-        Usuario usuario = new Usuario();
-        usuario.setCedula(crearUsuario.getCedula());
-        usuario.setNombre(crearUsuario.getNombre());
-        usuario.setApellido(crearUsuario.getApellido());
-        usuario.setCorreo(crearUsuario.getCorreo());
-        usuario.setContrasenia(crearUsuario.getContrasenia());
-
-        usuario.setTelefono(crearUsuario.getTelefono());
-        usuario.setDireccion(crearUsuario.getDireccion());
-
-        usuarioServicio.save(usuario);
-
-        return ResponseEntity.ok(usuario);
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<Usuario> updateUsuario(@RequestBody ActualizarUsuario actualizarUsuario){
-        Optional<Usuario> usuarioOptional = usuarioServicio.findById(actualizarUsuario.getId());
+    @PutMapping("/create")
+    public ResponseEntity<Cliente> createUsuario(@RequestBody CrearUsuario crearUsuario){
+        Optional<Cliente> usuarioOptional = Optional.ofNullable(usuarioServicio.retrieveUsuarioByCedula(crearUsuario.getCedula()));
         if(usuarioOptional.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
-        Usuario usuarioEncontrado = usuarioOptional.get();
-        usuarioEncontrado.setCedula(actualizarUsuario.getCedula());
-        usuarioEncontrado.setNombre(actualizarUsuario.getNombre());
-        usuarioEncontrado.setApellido(actualizarUsuario.getApellido());
-        usuarioEncontrado.setCorreo(actualizarUsuario.getCorreo());
-        usuarioEncontrado.setContrasenia(actualizarUsuario.getContrasenia());
-        usuarioEncontrado.setTelefono(actualizarUsuario.getTelefono());
-        usuarioEncontrado.setDireccion(actualizarUsuario.getDireccion());
+        Cliente clienteEcontrado = usuarioOptional.get();
+        clienteEcontrado.setCorreo(crearUsuario.getCorreo());
+        clienteEcontrado.setContrasenia(crearUsuario.getContrasenia());
+        usuarioServicio.save(clienteEcontrado);
 
-        usuarioServicio.save(usuarioEncontrado);
+        return ResponseEntity.ok(clienteEcontrado);
+    }
 
-        return ResponseEntity.ok(usuarioEncontrado);
+    @PutMapping("/update")
+    public ResponseEntity<Cliente> updateUsuario(@RequestBody ActualizarUsuario actualizarUsuario){
+        Optional<Cliente> usuarioOptional = usuarioServicio.findById(actualizarUsuario.getId());
+        if(usuarioOptional.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        Cliente clienteEncontrado = usuarioOptional.get();
+        clienteEncontrado.setCedula(actualizarUsuario.getCedula());
+        clienteEncontrado.setNombre(actualizarUsuario.getNombre());
+        clienteEncontrado.setApellido(actualizarUsuario.getApellido());
+        clienteEncontrado.setCorreo(actualizarUsuario.getCorreo());
+        clienteEncontrado.setContrasenia(actualizarUsuario.getContrasenia());
+        clienteEncontrado.setTelefono(actualizarUsuario.getTelefono());
+        clienteEncontrado.setDireccion(actualizarUsuario.getDireccion());
+
+        usuarioServicio.save(clienteEncontrado);
+
+        return ResponseEntity.ok(clienteEncontrado);
     }
 
 
@@ -101,5 +102,10 @@ public class UsuarioControlador {
         usuarioServicio.delete(id);
 
         return ResponseEntity.ok("Usuario Eliminada Correctamente");
+    }
+    @GetMapping("/logout")
+    public ResponseEntity <String> cerrarS(HttpSession httpSession){
+        httpSession.setAttribute("",null);
+        return ResponseEntity.ok("Cerrar Sesion correcto");
     }
 }

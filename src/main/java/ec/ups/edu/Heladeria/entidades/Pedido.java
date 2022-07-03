@@ -13,7 +13,7 @@ public class Pedido implements Serializable {
     private long id;
     @OneToOne
     @JoinColumn(name = "cliente_id")
-    private Usuario usuario;
+    private Cliente cliente;
     private double latitud;
     private double longitud;
     private String estado;
@@ -26,9 +26,9 @@ public class Pedido implements Serializable {
     public Pedido() {
     }
 
-    public Pedido(long id, Usuario usuario, double latitud, double longitud, String estado, double costoEnvio, List<Detalle> detalles, Tarjeta tarjeta) {
+    public Pedido(long id, Cliente cliente, double latitud, double longitud, String estado, double costoEnvio, List<Detalle> detalles, Tarjeta tarjeta) {
         this.id = id;
-        this.usuario = usuario;
+        this.cliente = cliente;
         this.latitud = latitud;
         this.longitud = longitud;
         this.estado = estado;
@@ -47,12 +47,12 @@ public class Pedido implements Serializable {
         this.id = id;
     }
 
-    public Usuario getCliente() {
-        return usuario;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setCliente(Usuario usuario) {
-        this.usuario = usuario;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public double getLatitud() {

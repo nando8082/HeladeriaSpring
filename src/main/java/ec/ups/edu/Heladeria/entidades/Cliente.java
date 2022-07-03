@@ -1,7 +1,5 @@
 package ec.ups.edu.Heladeria.entidades;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -10,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 
-public class Usuario {
+public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,14 +23,14 @@ public class Usuario {
     private String telefono;
     private String direccion;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
     //@JsonIgnore
     private List<Tarjeta> tarjetas;
 
-    public Usuario() {
+    public Cliente() {
     }
 
-    public Usuario(long id, String cedula, String nombre, String apellido, String correo, String contrasenia, String telefono, String direccion) {
+    public Cliente(long id, String cedula, String nombre, String apellido, String correo, String contrasenia, String telefono, String direccion) {
         this.id = id;
         this.cedula = cedula;
         this.nombre = nombre;
@@ -120,8 +118,8 @@ public class Usuario {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Usuario usuario = (Usuario) o;
-        return id == usuario.id && cedula.equals(usuario.cedula) && nombre.equals(usuario.nombre) && apellido.equals(usuario.apellido) && correo.equals(usuario.correo) && contrasenia.equals(usuario.contrasenia)  && telefono.equals(usuario.telefono) && direccion.equals(usuario.direccion);
+        Cliente cliente = (Cliente) o;
+        return id == cliente.id && cedula.equals(cliente.cedula) && nombre.equals(cliente.nombre) && apellido.equals(cliente.apellido) && correo.equals(cliente.correo) && contrasenia.equals(cliente.contrasenia)  && telefono.equals(cliente.telefono) && direccion.equals(cliente.direccion);
     }
 
     @Override

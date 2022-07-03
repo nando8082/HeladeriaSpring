@@ -48,7 +48,7 @@ public class PedidoControlador {
 
     @PostMapping("/pedido/create") //crear Pedido
     public ResponseEntity<Pedido> createPedido(@RequestBody CrearPedido crearPedido) {
-        Optional<Usuario> clineteOptional = usuarioServicio.findById(crearPedido.getIdCliente());
+        Optional<Cliente> clineteOptional = usuarioServicio.findById(crearPedido.getIdCliente());
         if(clineteOptional.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
@@ -77,7 +77,7 @@ public class PedidoControlador {
             Pedido pedido =pedidoOptional.orElseThrow(PedidoNoEncontradoException::new);
             return new ResponseEntity <Pedido>(pedido,HttpStatus.OK);
         }
-        Optional<Usuario> clineteOptional = usuarioServicio.findById(actualizarPedido.getIdCliente());
+        Optional<Cliente> clineteOptional = usuarioServicio.findById(actualizarPedido.getIdCliente());
         if(clineteOptional.isEmpty()){
             return ResponseEntity.badRequest().build();
         }

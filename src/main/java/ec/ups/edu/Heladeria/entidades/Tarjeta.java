@@ -29,7 +29,7 @@ public class Tarjeta {
     @ManyToOne
     @JoinColumn
     //@JsonIgnore
-    private Usuario usuario;
+    private Cliente cliente;
 
     public Tarjeta() {
     }
@@ -83,12 +83,12 @@ public class Tarjeta {
     }
 
     @JsonBackReference
-    public Usuario getUsuario() {
-        return usuario;
+    public Cliente getUsuario() {
+        return cliente;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuario(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     @Override
@@ -113,7 +113,7 @@ public class Tarjeta {
                 ", fechaCducidad=" + fechaCducidad +
                 ", codigoCvv=" + codigoCvv +
                 ", tipo='" + tipo + '\'' +
-                ", usuario=" + usuario +
+                ", usuario=" + cliente +
                 '}';
     }
 }

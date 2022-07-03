@@ -1,23 +1,23 @@
 package ec.ups.edu.Heladeria.repositorios;
 
-import ec.ups.edu.Heladeria.entidades.Usuario;
+import ec.ups.edu.Heladeria.entidades.Cliente;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface UsuarioRepositorio extends CrudRepository<Usuario, Long> {
+public interface UsuarioRepositorio extends CrudRepository<Cliente, Long> {
 
-    @Query("select u.id, u.nombre from Usuario u where u.id = :id")
+    @Query("select u.id, u.nombre from Cliente u where u.id = :id")
     String findUsuarioNombreById(Long id);
 
-    @Query("select u.nombre from Usuario u")
+    @Query("select u.nombre from Cliente u")
     List<String> findAllNombre();
 
-    @Query("select u from Usuario u where u.cedula = :cedula")
-    Usuario findUsuarioByCedula(String cedula);
+    @Query("select u from Cliente u where u.cedula = :cedula")
+    Cliente findUsuarioByCedula(String cedula);
 
-    @Query("select u from Usuario u where u.correo =:correo and u.contrasenia = :contrasenia")
-    Usuario getUsuarioEncontrado(String correo, String contrasenia);
+    @Query("select u from Cliente u where u.correo =:correo and u.contrasenia = :contrasenia")
+    Cliente getUsuarioEncontrado(String correo, String contrasenia);
 
 }

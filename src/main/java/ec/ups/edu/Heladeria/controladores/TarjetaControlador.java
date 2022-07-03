@@ -1,13 +1,13 @@
 package ec.ups.edu.Heladeria.controladores;
 
-import ec.ups.edu.Heladeria.entidades.Usuario;
+import ec.ups.edu.Heladeria.entidades.Cliente;
 import ec.ups.edu.Heladeria.entidades.Tarjeta;
 import ec.ups.edu.Heladeria.entidades.peticiones.tarjeta.ActualizarTarjeta;
 import ec.ups.edu.Heladeria.entidades.peticiones.tarjeta.CrearTarjeta;
-import ec.ups.edu.Heladeria.entidades.peticiones.usuario.ActualizarUsuario;
 import ec.ups.edu.Heladeria.servicios.UsuarioServicio;
 import ec.ups.edu.Heladeria.servicios.TarjetaNoEncontradaException;
 import ec.ups.edu.Heladeria.servicios.TarjetaServicio;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +36,9 @@ public class TarjetaControlador {
 
     //Crear Tarjeta
     @PostMapping("/create")
-    public ResponseEntity<Tarjeta> createTarjeta(@RequestBody CrearTarjeta crearTarjeta){
-
-        Optional<Usuario> usuario = usuarioServicio.findById(crearTarjeta.getIdUsuario());
+    public ResponseEntity<Tarjeta> createTarjeta(@RequestBody CrearTarjeta crearTarjeta, HttpSession httpSession){
+        long id = (long) httpSession.getAttribute("idCliente");
+        Optional<Cliente> usuario = usuarioServicio.findById(id);
 
         if (usuario.isEmpty()){
             return ResponseEntity.badRequest().build();
