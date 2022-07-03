@@ -26,11 +26,16 @@ public class Producto implements Serializable {
     @JsonIgnore
     private Sucursal sucursal;
 
+    @ManyToOne
+    @JoinColumn(nullable = true)
+    @JsonIgnore
+    private Categorias categorias;
+
     public Producto() {
 
     }
 
-    public Producto(long id, String nombre, String descripcion, String marca, int stock, String estado, Double precio, int cantidad, Sucursal sucursal) {
+    public Producto(long id, String nombre, String descripcion, String marca, int stock, String estado, Double precio, int cantidad, Sucursal sucursal, Categorias categorias) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -41,6 +46,8 @@ public class Producto implements Serializable {
         this.cantidad = cantidad;
 
         this.sucursal = sucursal;
+
+        this.categorias = categorias;
     }
 
 
@@ -116,9 +123,16 @@ public class Producto implements Serializable {
         this.cantidad = cantidad;
     }
 
+    public Categorias getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(Categorias categorias) {
+        this.categorias = categorias;
+    }
 
     @Override
     public String toString() {
-        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", marca=" + marca + ", stock=" + stock + ", estado=" + estado + ", precio=" + precio +   ", sucursal=" + sucursal + '}';
+        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", marca=" + marca + ", stock=" + stock + ", estado=" + estado + ", precio=" + precio +   ", sucursal=" + sucursal +", categorias=" + categorias + '}';
     }
 }

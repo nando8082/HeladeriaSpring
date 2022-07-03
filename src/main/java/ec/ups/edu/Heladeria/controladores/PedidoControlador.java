@@ -7,6 +7,7 @@ import ec.ups.edu.Heladeria.servicios.UsuarioServicio;
 import ec.ups.edu.Heladeria.servicios.PedidoNoEncontradoException;
 import ec.ups.edu.Heladeria.servicios.PedidoServicio;
 import ec.ups.edu.Heladeria.servicios.TarjetaServicio;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,13 +48,14 @@ public class PedidoControlador {
     }
 
     @PostMapping("/pedido/create") //crear Pedido
-    public ResponseEntity<Pedido> createPedido(@RequestBody CrearPedido crearPedido) {
-        Optional<Cliente> clineteOptional = usuarioServicio.findById(crearPedido.getIdCliente());
+    public ResponseEntity<Pedido> createPedido(@RequestBody CrearPedido crearPedido, HttpSession httpSession) {
+        long idCl = (long) httpSession.getAttribute("idCliente");
+        Optional<Cliente> clineteOptional = usuarioServicio.findById(idCl);
         if(clineteOptional.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
 
-        Optional<Tarjeta> optionalTarjeta = tarjetaServicio.findById(crearPedido.getIdTarjeta());
+        Optional<Tarjeta> optionalTarjeta = Optional.ofNullable(tarjetaServicio.retrieveTarjetaBynumTarjeta(crearPedido.getNumTarjeta()));
         if(optionalTarjeta.isEmpty()){
             return ResponseEntity.badRequest().build();
         }

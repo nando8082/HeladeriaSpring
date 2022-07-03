@@ -20,7 +20,7 @@ public class CrearPedido {
     @JsonProperty
     private List<Detalle> detalles;
     @JsonProperty
-    private long idTarjeta;
+    private int numTarjeta;
 
     public long getIdCliente() {
         return idCliente;
@@ -70,11 +70,11 @@ public class CrearPedido {
         this.detalles = detalles;
     }
 
-    public long getIdTarjeta() {
-        return idTarjeta;
+    public int getNumTarjeta() {
+        return numTarjeta;
     }
 
-    public void setIdTarjeta(long idTarjeta) {
-        this.idTarjeta = idTarjeta;
+    public void setNumTarjeta(int numTarjeta) {
+        this.numTarjeta = numTarjeta;
     }
 }
