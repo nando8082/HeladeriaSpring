@@ -17,6 +17,7 @@ public class Pedido implements Serializable {
     private double latitud;
     private double longitud;
     private String estado;
+    @Column(name = "costo_envio")
     private double costoEnvio;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<Detalle> detalles;
