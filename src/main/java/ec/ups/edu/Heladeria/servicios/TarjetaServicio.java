@@ -1,5 +1,6 @@
 package ec.ups.edu.Heladeria.servicios;
 
+import ec.ups.edu.Heladeria.entidades.Producto;
 import ec.ups.edu.Heladeria.entidades.Tarjeta;
 import ec.ups.edu.Heladeria.repositorios.TarjetaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,17 @@ public class TarjetaServicio {
         return tarjeta;
     }
 
-    public void delete(Long id){
+    public List<Tarjeta> retrieveTarjetas(Long id){
+        return (List<Tarjeta>) tarjetaRepositorio.findTarjetaID(id);
+    }
+
+
+
+    public void delete(int numTarjeta){
+        Tarjeta tarjeta = tarjetaRepositorio.findTarjetaBynumTarjeta(numTarjeta);
+        long id = tarjeta.getId();
+        System.out.println(id);
+
         tarjetaRepositorio.deleteById(id);
     }
 

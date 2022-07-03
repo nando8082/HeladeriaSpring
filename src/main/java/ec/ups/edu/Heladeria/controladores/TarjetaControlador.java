@@ -1,6 +1,7 @@
 package ec.ups.edu.Heladeria.controladores;
 
 import ec.ups.edu.Heladeria.entidades.Cliente;
+import ec.ups.edu.Heladeria.entidades.Producto;
 import ec.ups.edu.Heladeria.entidades.Tarjeta;
 import ec.ups.edu.Heladeria.entidades.peticiones.tarjeta.ActualizarTarjeta;
 import ec.ups.edu.Heladeria.entidades.peticiones.tarjeta.CrearTarjeta;
@@ -67,18 +68,22 @@ public class TarjetaControlador {
 
     //Listar todas las tarjetas
 
-    @GetMapping
-    public ResponseEntity<List<Tarjeta>> getAllTarjetas(){
-        List<Tarjeta> listaTarjetas = tarjetaServicio.findAll();
 
-        return new ResponseEntity<List<Tarjeta>>(listaTarjetas, HttpStatus.OK);
+
+    @GetMapping("/myCards")
+    public ResponseEntity<List<Tarjeta>> getTarjetasUser(HttpSession httpSession){
+        long id = (long) httpSession.getAttribute("idCliente");
+        System.out.println(id);
+        List<Tarjeta> listadoTarjetas = tarjetaServicio.retrieveTarjetas(id);
+
+        return new ResponseEntity<List<Tarjeta>>(listadoTarjetas, HttpStatus.OK);
     }
 
 
     //Eliminar Tarjeta
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteTarjeta(@PathVariable Long id){
-        tarjetaServicio.delete(id);
+    @DeleteMapping("/delete/{numTarjeta}")
+    public ResponseEntity<String> deleteTarjeta(@PathVariable int numTarjeta){
+        tarjetaServicio.delete(numTarjeta);
 
         return ResponseEntity.ok("Tarjeta Eliminada Correctamente");
     }

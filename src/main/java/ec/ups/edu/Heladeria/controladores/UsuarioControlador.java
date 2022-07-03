@@ -105,7 +105,7 @@ public class UsuarioControlador {
     }
     @GetMapping("/logout")
     public ResponseEntity <String> cerrarS(HttpSession httpSession){
-        httpSession.setAttribute("id",null);
+        httpSession.setAttribute("idCliente",null);
         System.out.println("Sesion cerrada id: "+httpSession.getAttribute("id"));
         return ResponseEntity.ok("Cerrar Sesion correcto");
     }
