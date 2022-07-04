@@ -7,8 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class CrearPedido {
-    @JsonProperty
-    private long idCliente;
+
     @JsonProperty
     private double latitud;
     @JsonProperty
@@ -22,13 +21,10 @@ public class CrearPedido {
     @JsonProperty
     private int numTarjeta;
 
-    public long getIdCliente() {
-        return idCliente;
-    }
+    @JsonProperty
+    private String nombreS;
 
-    public void setIdCliente(long idCliente) {
-        this.idCliente = idCliente;
-    }
+
 
     public double getLatitud() {
         return latitud;
@@ -76,5 +72,13 @@ public class CrearPedido {
 
     public void setNumTarjeta(int numTarjeta) {
         this.numTarjeta = numTarjeta;
+    }
+
+    public String getNombreS() {
+        return nombreS;
+    }
+
+    public void setNombreS(String nombreS) {
+        this.nombreS = nombreS;
     }
 }

@@ -32,7 +32,7 @@ public class Sucursal implements Serializable {
     private Set<Categorias> categorias = new HashSet<Categorias>();
     public Sucursal() {
 
-        super();
+
     }
 
     public Sucursal(Long id, String nombre, String telefono, String direccion, String ciudad, String correo, double latitud, double longitud) {
@@ -136,16 +136,16 @@ public class Sucursal implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Sucursal categoria = (Sucursal) o;
-        return Objects.equals(id, categoria.id);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sucursal sucursal = (Sucursal) o;
+        return Double.compare(sucursal.latitud, latitud) == 0 && Double.compare(sucursal.longitud, longitud) == 0 && Objects.equals(id, sucursal.id) && Objects.equals(nombre, sucursal.nombre) && Objects.equals(telefono, sucursal.telefono) && Objects.equals(direccion, sucursal.direccion) && Objects.equals(ciudad, sucursal.ciudad) && Objects.equals(correo, sucursal.correo) && Objects.equals(entidadPrincipal, sucursal.entidadPrincipal) && Objects.equals(productos, sucursal.productos) && Objects.equals(categorias, sucursal.categorias);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
     @Override
     public String toString() {

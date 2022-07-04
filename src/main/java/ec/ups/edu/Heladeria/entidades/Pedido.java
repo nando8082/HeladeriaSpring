@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Pedido implements Serializable {
@@ -24,6 +25,7 @@ public class Pedido implements Serializable {
     @OneToOne
     private Tarjeta tarjeta;
 
+
     public Pedido() {
     }
 
@@ -36,6 +38,7 @@ public class Pedido implements Serializable {
         this.costoEnvio = costoEnvio;
         this.detalles = detalles;
         this.tarjeta = tarjeta;
+
     }
 
 
@@ -102,5 +105,35 @@ public class Pedido implements Serializable {
 
     public void setTarjeta(Tarjeta tarjeta) {
         this.tarjeta = tarjeta;
+    }
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pedido pedido = (Pedido) o;
+        return id == pedido.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "id=" + id +
+                ", cliente=" + cliente +
+                ", latitud=" + latitud +
+                ", longitud=" + longitud +
+                ", estado='" + estado + '\'' +
+                ", costoEnvio=" + costoEnvio +
+                ", detalles=" + detalles +
+                ", tarjeta=" + tarjeta +
+
+                '}';
     }
 }

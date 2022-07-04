@@ -3,10 +3,7 @@ package ec.ups.edu.Heladeria.controladores;
 import ec.ups.edu.Heladeria.entidades.*;
 import ec.ups.edu.Heladeria.entidades.peticiones.pedido.ActualizarPedido;
 import ec.ups.edu.Heladeria.entidades.peticiones.pedido.CrearPedido;
-import ec.ups.edu.Heladeria.servicios.UsuarioServicio;
-import ec.ups.edu.Heladeria.servicios.PedidoNoEncontradoException;
-import ec.ups.edu.Heladeria.servicios.PedidoServicio;
-import ec.ups.edu.Heladeria.servicios.TarjetaServicio;
+import ec.ups.edu.Heladeria.servicios.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +20,7 @@ public class PedidoControlador {
     private UsuarioServicio usuarioServicio;
     private TarjetaServicio tarjetaServicio;
 
+    private SucursalServicio sucursalServicio;
     @Autowired //inyeccion de dependencia
     public void setPedidoServicio(PedidoServicio pedidoServicio) {
         this.pedidoServicio = pedidoServicio;
@@ -35,6 +33,12 @@ public class PedidoControlador {
     public void setTarjetaServicio(TarjetaServicio tarjetaServicio) {
         this.tarjetaServicio = tarjetaServicio;
     }
+    @Autowired
+    public void setSucursalServicio(SucursalServicio sucursalServicio) {
+        this.sucursalServicio = sucursalServicio;
+    }
+
+
 
 
 
@@ -59,13 +63,37 @@ public class PedidoControlador {
         if(optionalTarjeta.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
-        Pedido pedido = new Pedido();
 
+        Optional<Sucursal> optionalSucursal = Optional.ofNullable(sucursalServicio.retrieveSucursalName(crearPedido.getNombreS()));
+        if(optionalSucursal.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+
+      double lat1 = optionalSucursal.get().getLatitud();
+        double lng1 = optionalSucursal.get().getLongitud();
+       double lat2 = crearPedido.getLatitud();
+       double lng2 = crearPedido.getLongitud();
+
+        double radioTierra = 6371;//en kilómetros
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLng = Math.toRadians(lng2 - lng1);
+        double sindLat = Math.sin(dLat / 2);
+        double sindLng = Math.sin(dLng / 2);
+        double va1 = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
+                * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
+        double va2 = 2 * Math.atan2(Math.sqrt(va1), Math.sqrt(1 - va1));
+        double distancia = radioTierra * va2;
+        double distanciaT = Math.round(distancia*100.0)/100.0;
+
+        System.out.println("Distancia es: "+distanciaT+" km");
+
+
+        Pedido pedido = new Pedido();
         pedido.setCliente(clineteOptional.get());
         pedido.setLatitud(crearPedido.getLatitud());
         pedido.setLongitud(crearPedido.getLongitud());
-        pedido.setEstado(crearPedido.getEstado());
-        pedido.setCostoEnvio(crearPedido.getCostoEnvio());
+        pedido.setEstado("enCola");
+        pedido.setCostoEnvio(2.20);
         pedido.setDetalles(crearPedido.getDetalles());
         pedido.setTarjeta(optionalTarjeta.get());
         pedidoServicio.save(pedido);
