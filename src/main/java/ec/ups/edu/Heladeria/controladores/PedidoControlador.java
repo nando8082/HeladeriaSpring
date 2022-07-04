@@ -86,14 +86,13 @@ public class PedidoControlador {
         double distanciaT = Math.round(distancia*100.0)/100.0;
 
         System.out.println("Distancia es: "+distanciaT+" km");
-
-
+        double cEnvio = distancia*0.75;
         Pedido pedido = new Pedido();
         pedido.setCliente(clineteOptional.get());
         pedido.setLatitud(crearPedido.getLatitud());
         pedido.setLongitud(crearPedido.getLongitud());
-        pedido.setEstado("enCola");
-        pedido.setCostoEnvio(2.20);
+        pedido.setEstado("En Cola");
+        pedido.setCostoEnvio(cEnvio);
         pedido.setDetalles(crearPedido.getDetalles());
         pedido.setTarjeta(optionalTarjeta.get());
         pedidoServicio.save(pedido);
