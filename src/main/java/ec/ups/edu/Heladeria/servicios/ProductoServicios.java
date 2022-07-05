@@ -21,12 +21,16 @@ public class ProductoServicios {
     public List<Producto> retrieveProductosSucursal(Long id){
         return (List<Producto>) productoRepositorio.findProductosSucursal(id);
     }
+
+    public List<Producto> retrieveProductosCat(Long id){
+        return (List<Producto>) productoRepositorio.findProductosCat(id);
+    }
     public Optional<Producto> findById(long id){
         return (Optional<Producto>) productoRepositorio.findById(id);
     }
 
-    public List<String> retrieveAllNombre(){
-        return (List<String>) productoRepositorio.findAllNombre();
+    public List<Producto> retrieveAllNombre(){
+        return (List<Producto>) productoRepositorio.findAllNombre();
     }
 
     public Producto retrieveAllProducto(Long id){

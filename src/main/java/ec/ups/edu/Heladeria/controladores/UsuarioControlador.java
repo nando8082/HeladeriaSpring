@@ -34,24 +34,7 @@ public class UsuarioControlador {
         return new ResponseEntity<Optional<Cliente>>(listaClientes, HttpStatus.OK);
     }
 
-    @GetMapping("/{codigo}")
-    public ResponseEntity<String> getNombresByCodigo(@PathVariable Long id){
-        String nombres = usuarioServicio.retrieveUsuarioNombreById(id);
-        return new ResponseEntity<String>(nombres, HttpStatus.OK);
-    }
 
-    @GetMapping("/nombres")
-    public ResponseEntity<List<String>> getAllNombres(){
-        List<String> listaNombres = usuarioServicio.retrieveAllNombres();
-        return new ResponseEntity<List<String>>(listaNombres, HttpStatus.OK);
-    }
-
-    @GetMapping("/cedula/{cedula}")
-    public ResponseEntity<Cliente> getUsuarioByCedula(@PathVariable String cedula){
-        Optional<Cliente> usuarioOptional = Optional.ofNullable(usuarioServicio.retrieveUsuarioByCedula(cedula));
-        Cliente cliente = usuarioOptional.orElseThrow(UsuarioNoEncontradoException::new);
-        return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
-    }
 
     @GetMapping("/iniciarSesion")
     public ResponseEntity<Cliente> getUsuarioIiciado(@RequestBody  IniciarSesion iniciarS, HttpSession httpSession){

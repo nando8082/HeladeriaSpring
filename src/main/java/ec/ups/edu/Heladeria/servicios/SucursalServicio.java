@@ -23,6 +23,7 @@ public class SucursalServicio {
     }
 
     public Sucursal retrieveSucursalName(String nombre){
+
         return sucursalRepositorio.findSucursalNombre(nombre);
     }
 }

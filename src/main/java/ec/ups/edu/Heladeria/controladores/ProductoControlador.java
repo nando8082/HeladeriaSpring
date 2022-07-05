@@ -1,8 +1,9 @@
 package ec.ups.edu.Heladeria.controladores;
 
+import ec.ups.edu.Heladeria.entidades.Categorias;
 import ec.ups.edu.Heladeria.entidades.Producto;
 import ec.ups.edu.Heladeria.entidades.Sucursal;
-import ec.ups.edu.Heladeria.entidades.peticiones.producto.CrearProducto;
+import ec.ups.edu.Heladeria.servicios.CategoriaServicio;
 import ec.ups.edu.Heladeria.servicios.ProductoNoEncontradoException;
 import ec.ups.edu.Heladeria.servicios.ProductoServicios;
 import ec.ups.edu.Heladeria.servicios.SucursalServicio;
@@ -19,10 +20,19 @@ public class ProductoControlador {
 
     private ProductoServicios productoServicios;
     private SucursalServicio sucursalServicio;
+    private CategoriaServicio categoriaServicio;
+    @Autowired
+    public void setCategoriaServicio(CategoriaServicio categoriaServicio) {
+        this.categoriaServicio = categoriaServicio;
+    }
 
     @Autowired
     public ProductoControlador(ProductoServicios productoServicios) {
         this.productoServicios = productoServicios;
+    }
+    @Autowired
+    public void setSucursalServicio(SucursalServicio sucursalServicio) {
+        this.sucursalServicio = sucursalServicio;
     }
 
     @GetMapping("/productos")
@@ -31,19 +41,31 @@ public class ProductoControlador {
         return new ResponseEntity<List<Producto>>(listaProductos, HttpStatus.OK);
     }
 
-    @GetMapping("/productos/sucursal/{id}")
-    public ResponseEntity<List<Producto>> getProductosSucursal(@PathVariable Long id){
+    @GetMapping("/productos/sucursal/{nombreS}")
+    public ResponseEntity<List<Producto>> getProductosSucursal(@PathVariable String nombreS){
+        Optional<Sucursal> sucursalOptional = Optional.ofNullable(sucursalServicio.retrieveSucursalName(nombreS));
+        if(sucursalOptional.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        long id = sucursalOptional.get().getId();
         List<Producto> listadoSucursal = productoServicios.retrieveProductosSucursal(id);
-
+        System.out.println(listadoSucursal);
         return new ResponseEntity<List<Producto>>(listadoSucursal, HttpStatus.OK);
     }
 
-    @GetMapping("/producto/nombre")
-    public ResponseEntity<List<String>> getAllNombre(){
-        List<String> listaNombres = productoServicios.retrieveAllNombre();
-
-        return new ResponseEntity<List<String>>(listaNombres, HttpStatus.OK);
+    @GetMapping("/productos/categoria/{nombreC}")
+    public ResponseEntity<List<Producto>> getProductosCat(@PathVariable String nombreC){
+        Optional<Categorias> categoriasOptional = Optional.ofNullable(categoriaServicio.retrieveCateName(nombreC));
+        if(categoriasOptional.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        long id = categoriasOptional.get().getId();
+        List<Producto> lstCat = productoServicios.retrieveProductosCat(id);
+        System.out.println(lstCat);
+        return new ResponseEntity<List<Producto>>(lstCat, HttpStatus.OK);
     }
+
+
 
     @GetMapping("/producto/id/{id}")
     public ResponseEntity<Producto> getProducto(@PathVariable Long id){
@@ -59,25 +81,5 @@ public class ProductoControlador {
         return new ResponseEntity<List<String>>(listaNombres, HttpStatus.OK);
     }
 
-    @PostMapping("/producto/create")
-    public ResponseEntity<Producto> createProducto(@RequestBody CrearProducto crearProducto){
-        Optional<Sucursal> sucursal = sucursalServicio.findByCodigo(crearProducto.getIdSucursal());
 
-        if(sucursal.isEmpty()){
-            return ResponseEntity.badRequest().build();
-        }
-
-        Producto producto = new Producto();
-        producto.setNombre(crearProducto.getNombre());
-        producto.setDescripcion(crearProducto.getDescripcion());
-        producto.setMarca(crearProducto.getMarca());
-        producto.setStock(crearProducto.getStock());
-        producto.setEstado(crearProducto.getEstado());
-        producto.setPrecio(crearProducto.getPrecio());
-        producto.setCantidad(crearProducto.getCantidad());
-        producto.setSucursal(sucursal.get());
-
-        productoServicios.save(producto);
-        return  ResponseEntity.ok(producto);
-    }
 }
