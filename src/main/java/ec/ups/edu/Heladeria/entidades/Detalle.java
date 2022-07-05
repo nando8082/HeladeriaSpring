@@ -19,7 +19,8 @@ public class Detalle implements Serializable {
     private double precio;
     private double subtotal;
 
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = true )
     @JsonIgnore
     private Pedido pedido;
@@ -77,8 +78,10 @@ public class Detalle implements Serializable {
         this.id = id;
     }
 
-    public Pedido getPedido() {
-        return pedido;
+
+
+  public Pedido getPedido() {
+       return pedido;
     }
 
     public void setPedido(Pedido pedido) {

@@ -2,6 +2,7 @@ package ec.ups.edu.Heladeria.servicios;
 
 import ec.ups.edu.Heladeria.entidades.Pedido;
 import ec.ups.edu.Heladeria.entidades.Producto;
+import ec.ups.edu.Heladeria.entidades.Tarjeta;
 import ec.ups.edu.Heladeria.repositorios.PedidoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,10 @@ public class PedidoServicio {
 
     public Pedido retrieveAllProducto(Long id){
         return (Pedido) pedidoRepositorio.findPedidobyId(id);
+    }
+
+    public Pedido retrieveIdClienteEstado(long idCliente, String estado){
+        return pedidoRepositorio.IdClienteEstado(idCliente, estado);
     }
 
 

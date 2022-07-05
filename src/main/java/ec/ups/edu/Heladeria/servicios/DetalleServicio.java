@@ -2,6 +2,7 @@ package ec.ups.edu.Heladeria.servicios;
 
 import ec.ups.edu.Heladeria.entidades.Detalle;
 import ec.ups.edu.Heladeria.entidades.Pedido;
+import ec.ups.edu.Heladeria.entidades.Tarjeta;
 import ec.ups.edu.Heladeria.repositorios.DetalleRepositorio;
 import ec.ups.edu.Heladeria.repositorios.PedidoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,12 @@ public class DetalleServicio {
     }
 
 
-
+    public Detalle codigoProducto(long idProd){
+        return detalleRepositorio.findIdProd(idProd);
+    }
+    public Optional<Detalle> findById(long id){
+        return detalleRepositorio.findById(id);
+    }
 
 
 }

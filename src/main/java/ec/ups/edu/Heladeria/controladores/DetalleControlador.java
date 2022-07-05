@@ -1,12 +1,9 @@
 package ec.ups.edu.Heladeria.controladores;
 
 
-import ec.ups.edu.Heladeria.entidades.Detalle;
-import ec.ups.edu.Heladeria.entidades.Pedido;
-import ec.ups.edu.Heladeria.entidades.Producto;
+import ec.ups.edu.Heladeria.entidades.*;
 import ec.ups.edu.Heladeria.entidades.peticiones.detalle.CrearDetalle;
 
-import ec.ups.edu.Heladeria.repositorios.DetalleRepositorio;
 import ec.ups.edu.Heladeria.servicios.DetalleServicio;
 import ec.ups.edu.Heladeria.servicios.PedidoNoEncontradoException;
 import ec.ups.edu.Heladeria.servicios.PedidoServicio;
@@ -15,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,7 +41,7 @@ public class DetalleControlador {
         this.pedidoServicio = pedidoServicio;
     }
 
-    @PostMapping("/detalle/create") //crear Pedido
+    @PutMapping("/detalle/agregarACarritto") //crear Pedido
     public ResponseEntity<Detalle> createDetalle(@RequestBody CrearDetalle crearDetalle) {
 
         Optional<Producto> producto = productoServicio.findById(crearDetalle.getIdproducto());
@@ -51,20 +49,28 @@ public class DetalleControlador {
         if (producto.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
-        Optional<Pedido> pedidoOptional = pedidoServicio.findById(crearDetalle.getIdpedido());
-        System.out.printf(String.valueOf(pedidoOptional.get()));
-        if (pedidoOptional.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-        Producto producto1 = producto.get();
+
+
+
+
+
         Detalle detalle = new Detalle();
+
+
+
+
         detalle.setCantidad(crearDetalle.getCantidad());
-        detalle.setPrecio(producto1.getPrecio());
-        detalle.setProducto(producto1);
-        detalle.setSubtotal(producto1.getPrecio()*crearDetalle.getCantidad());
-        detalle.setPedido(pedidoOptional.get());
+        detalle.setPrecio(producto.get().getPrecio());
+        detalle.setProducto(producto.get());
+        detalle.setSubtotal(producto.get().getPrecio()*crearDetalle.getCantidad());
+
         detalleServicio.Crear(detalle);
+
         return ResponseEntity.ok(detalle);
+
+
+
+
     }
 }
 

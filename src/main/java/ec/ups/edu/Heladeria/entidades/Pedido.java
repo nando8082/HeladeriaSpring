@@ -1,5 +1,6 @@
 package ec.ups.edu.Heladeria.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -22,6 +23,7 @@ public class Pedido implements Serializable {
     private double costoEnvio;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<Detalle> detalles;
+    private double total;
     @OneToOne
     private Tarjeta tarjeta;
 
@@ -29,13 +31,14 @@ public class Pedido implements Serializable {
     public Pedido() {
     }
 
-    public Pedido(long id, Cliente cliente, double latitud, double longitud, String estado, double costoEnvio, List<Detalle> detalles, Tarjeta tarjeta) {
+    public Pedido(long id, Cliente cliente, double latitud, double longitud, String estado, double costoEnvio, double total, List<Detalle> detalles, Tarjeta tarjeta) {
         this.id = id;
         this.cliente = cliente;
         this.latitud = latitud;
         this.longitud = longitud;
         this.estado = estado;
         this.costoEnvio = costoEnvio;
+        this.total=total;
         this.detalles = detalles;
         this.tarjeta = tarjeta;
 
@@ -91,8 +94,16 @@ public class Pedido implements Serializable {
         this.costoEnvio = costoEnvio;
     }
 
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
     public List<Detalle> getDetalles() {
-        return detalles;
+       return detalles;
     }
 
     public void setDetalles(List<Detalle> detalles) {

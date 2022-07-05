@@ -1,6 +1,7 @@
 package ec.ups.edu.Heladeria.controladores;
 
 import ec.ups.edu.Heladeria.entidades.*;
+import ec.ups.edu.Heladeria.entidades.peticiones.detalle.CrearDetalle;
 import ec.ups.edu.Heladeria.entidades.peticiones.pedido.ActualizarPedido;
 import ec.ups.edu.Heladeria.entidades.peticiones.pedido.CrearPedido;
 import ec.ups.edu.Heladeria.servicios.*;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +23,20 @@ public class PedidoControlador {
     private TarjetaServicio tarjetaServicio;
 
     private SucursalServicio sucursalServicio;
+
+    private  DetalleServicio detalleServicio;
+
+    private  ProductoServicios productoServicios;
+    @Autowired
+    public void setDetalleServicioñ(DetalleServicio detalleServicioñ) {
+        this.detalleServicio = detalleServicioñ;
+    }
+
+    @Autowired
+    public void setProductoServicios(ProductoServicios productoServicios) {
+        this.productoServicios = productoServicios;
+    }
+
     @Autowired //inyeccion de dependencia
     public void setPedidoServicio(PedidoServicio pedidoServicio) {
         this.pedidoServicio = pedidoServicio;
@@ -40,10 +56,10 @@ public class PedidoControlador {
 
 
 
+    List<Detalle> detalles = new ArrayList<Detalle>();
 
 
-
-
+private double sumaTotal=0;
 
     @GetMapping("/pedidos") //obtener el listado de Pedidos
     public ResponseEntity<List<Pedido>> getAllPedidos() {
@@ -51,7 +67,7 @@ public class PedidoControlador {
         return new ResponseEntity<List<Pedido>>(listaPedidos, HttpStatus.OK);
     }
 
-    @PostMapping("/pedido/create") //crear Pedido
+    @PostMapping("/pedido/terminar") //crear Pedido
     public ResponseEntity<Pedido> createPedido(@RequestBody CrearPedido crearPedido, HttpSession httpSession) {
         long idCl = (long) httpSession.getAttribute("idCliente");
         Optional<Cliente> clineteOptional = usuarioServicio.findById(idCl);
@@ -91,12 +107,22 @@ public class PedidoControlador {
         pedido.setCliente(clineteOptional.get());
         pedido.setLatitud(crearPedido.getLatitud());
         pedido.setLongitud(crearPedido.getLongitud());
-        pedido.setEstado("En Cola");
+        pedido.setEstado("Procesando");
         pedido.setCostoEnvio(cEnvio);
-        pedido.setDetalles(crearPedido.getDetalles());
+        pedido.setTotal(  (sumaTotal = detalles.stream().mapToDouble(dt -> dt.getSubtotal()).sum())+cEnvio);
         pedido.setTarjeta(optionalTarjeta.get());
         pedidoServicio.save(pedido);
+
+
+        for (int x = 0; x < detalles.size(); x++) {
+
+            Detalle d = detalles.get(x);
+            d.setPedido(pedido);
+            detalleServicio.Crear(d);
+        }
         return ResponseEntity.ok(pedido);
+
+
     }
 
     @PutMapping("/pedido/update")
@@ -134,5 +160,53 @@ public class PedidoControlador {
     }
 
 
+    @PostMapping ("/detalle1/create") //crear Pedido
+    public ResponseEntity<List<Detalle>> createDetalle(@RequestBody CrearDetalle crearDetalle, HttpSession httpSession) {
+        long id = (long) httpSession.getAttribute("idCliente");
+        Optional<Producto> producto = productoServicios.findById(crearDetalle.getIdproducto());
+String estado = "procesando";
+       Optional<Pedido> optionalPedido = Optional.ofNullable(pedidoServicio.retrieveIdClienteEstado(id, estado));
+
+        System.out.println("optional "+optionalPedido);
+
+
+        if (producto.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        Detalle detalle1;
+        boolean prod = false;
+        Producto producto1 = producto.get();
+
+        for (int x = 0; x < detalles.size(); x++) {
+
+            Detalle d = detalles.get(x);
+            if (crearDetalle.getIdproducto() == d.getProducto().getId() ){
+                System.out.println("Prodiuccto");
+                prod = true;
+                sumaTotal=0;
+               // Producto producto1 = d.getProducto();
+                d.setCantidad(crearDetalle.getCantidad()+d.getCantidad());
+                System.out.println(crearDetalle.getCantidad()+d.getCantidad());
+                d.setSubtotal(d.getProducto().getPrecio()*(d.getCantidad()));
+                break; // Terminar ciclo, pues ya lo encontramos
+            }
+        }
+
+if(prod == false) {
+    Detalle detalle = new Detalle();
+    detalle.setCantidad(crearDetalle.getCantidad());
+    detalle.setPrecio(producto1.getPrecio());
+    detalle.setProducto(producto1);
+    detalle.setSubtotal(producto1.getPrecio() * crearDetalle.getCantidad());
+    //  detalle.setPedido(pedidoOptional.get());
+    //validar que le producto no se añada 2 veces
+
+
+    detalles.add(detalle);
+}
+        sumaTotal = detalles.stream().mapToDouble(dt -> dt.getSubtotal()).sum();
+        System.out.println("hhhhhhhhhhhhh "+sumaTotal);
+        return new ResponseEntity<List<Detalle>>(detalles, HttpStatus.OK);
+    }
 
 }
