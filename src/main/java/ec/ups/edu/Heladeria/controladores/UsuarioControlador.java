@@ -40,7 +40,17 @@ public class UsuarioControlador {
     public ResponseEntity<Cliente> getUsuarioIiciado(@RequestBody  IniciarSesion iniciarS, HttpSession httpSession){
 
         Optional<Cliente> usuarioOptional = Optional.ofNullable(usuarioServicio.iniciarsesion(iniciarS.getCorreo(),iniciarS.getContrasenia()));
-        httpSession.setAttribute("idCliente",usuarioOptional.get().getId());
+
+
+        if(usuarioOptional.isEmpty()){
+            System.out.println("Usuario no enconrado");
+            httpSession.setAttribute("Verificador", "false");
+        }else{
+            httpSession.setAttribute("Verificador", "true");
+            httpSession.setAttribute("idCliente",usuarioOptional.get().getId());
+            System.out.println("CorrectoLogin");
+        }
+
         Cliente cliente = usuarioOptional.orElseThrow(UsuarioNoEncontradoException::new);
         return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
     }

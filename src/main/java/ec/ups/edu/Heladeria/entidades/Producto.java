@@ -17,8 +17,7 @@ public class Producto implements Serializable {
     private int stock;
     private String estado;
     private Double precio;
-    @Transient
-    private int cantidad;
+
 
 
     @ManyToOne
@@ -35,7 +34,7 @@ public class Producto implements Serializable {
 
     }
 
-    public Producto(long id, String nombre, String descripcion, String marca, int stock, String estado, Double precio, int cantidad, Sucursal sucursal, Categorias categorias) {
+    public Producto(long id, String nombre, String descripcion, String marca, int stock, String estado, Double precio, Sucursal sucursal, Categorias categorias) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -43,7 +42,6 @@ public class Producto implements Serializable {
         this.stock = stock;
         this.estado = estado;
         this.precio = precio;
-        this.cantidad = cantidad;
 
         this.sucursal = sucursal;
 

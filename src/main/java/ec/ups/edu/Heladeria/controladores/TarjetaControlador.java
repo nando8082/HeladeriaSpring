@@ -1,20 +1,23 @@
 package ec.ups.edu.Heladeria.controladores;
 
 import ec.ups.edu.Heladeria.entidades.Cliente;
-import ec.ups.edu.Heladeria.entidades.Producto;
 import ec.ups.edu.Heladeria.entidades.Tarjeta;
 import ec.ups.edu.Heladeria.entidades.peticiones.tarjeta.ActualizarTarjeta;
 import ec.ups.edu.Heladeria.entidades.peticiones.tarjeta.CrearTarjeta;
+import ec.ups.edu.Heladeria.servicios.SesionC;
 import ec.ups.edu.Heladeria.servicios.UsuarioServicio;
 import ec.ups.edu.Heladeria.servicios.TarjetaNoEncontradaException;
 import ec.ups.edu.Heladeria.servicios.TarjetaServicio;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -37,9 +40,16 @@ public class TarjetaControlador {
 
     //Crear Tarjeta
     @PostMapping("/create")
-    public ResponseEntity<Tarjeta> createTarjeta(@RequestBody CrearTarjeta crearTarjeta, HttpSession httpSession){
+    public ResponseEntity<?> createTarjeta(@RequestBody CrearTarjeta crearTarjeta, HttpSession httpSession){
+        String v = (String) httpSession.getAttribute("Verificador");
+        System.out.println(v);
+
+
+        if(v== "true"){
+
         long id = (long) httpSession.getAttribute("idCliente");
         Optional<Cliente> usuario = usuarioServicio.findById(id);
+
 
         if (usuario.isEmpty()){
             return ResponseEntity.badRequest().build();
@@ -54,7 +64,13 @@ public class TarjetaControlador {
         tarjeta.setUsuario(usuario.get());
 
         tarjetaServicio.save(tarjeta);
-        return ResponseEntity.ok(tarjeta);
+
+       return   ResponseEntity.ok(tarjeta);
+
+        }
+
+        return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
+
     }
 
     //Buscar por número de tarjeta
