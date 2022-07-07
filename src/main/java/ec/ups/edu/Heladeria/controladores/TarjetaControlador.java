@@ -76,10 +76,12 @@ public class TarjetaControlador {
     //Buscar por número de tarjeta
 
     @GetMapping("/{numTarjeta}")
-    public ResponseEntity<Tarjeta> getTarjetaBynumTarjeta(@PathVariable int numTarjeta){
+    public ResponseEntity<?> getTarjetaBynumTarjeta(@PathVariable int numTarjeta){
         Optional<Tarjeta> tarjetaOptional = Optional.ofNullable(tarjetaServicio.retrieveTarjetaBynumTarjeta(numTarjeta));
-        Tarjeta tarjeta = tarjetaOptional.orElseThrow(TarjetaNoEncontradaException::new);
-        return new ResponseEntity<Tarjeta>(tarjeta, HttpStatus.OK);
+      if(tarjetaOptional.get().getNumTarjeta()<0){
+          return  ResponseEntity.ok("No existe tarjeta");
+      }
+        return  ResponseEntity.ok(tarjetaOptional);
     }
 
     //Listar todas las tarjetas
@@ -107,7 +109,7 @@ public class TarjetaControlador {
     //Actualizar Tarjeta
 
     @PutMapping("/update")
-    public ResponseEntity<Tarjeta> updateTarjeta(@RequestBody ActualizarTarjeta actualizarTarjeta){
+    public ResponseEntity<?> updateTarjeta(@RequestBody ActualizarTarjeta actualizarTarjeta){
         Optional<Tarjeta> tarjetaOptional = tarjetaServicio.findById(actualizarTarjeta.getId());
         if(tarjetaOptional.isEmpty()){
             return ResponseEntity.badRequest().build();
