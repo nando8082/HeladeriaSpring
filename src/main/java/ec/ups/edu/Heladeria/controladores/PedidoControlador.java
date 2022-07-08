@@ -147,6 +147,40 @@ public class PedidoControlador{
         return ResponseEntity.ok("Pedido eliminado correctamente");
     }
 
+    @PutMapping("/pedido/confirmarEntrega")
+    public ResponseEntity<Factura> createFactura(@RequestBody CreaFactura creaFactura) {
+
+
+        Optional<Pedido> pedido = pedidoServicio.findById(creaFactura.getPedido());
+
+
+        if (pedido.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Pedido pedidoEncontrado = pedido.get();
+        Factura factura = new Factura();
+        System.out.println(pedidoEncontrado.getEstado());
+        if(pedidoEncontrado.getEstado().equals("Finalizado")){
+            System.out.println("Pedido ya fdacturado");
+        } else if (!pedidoEncontrado.getEstado().equals("Finalizado"))
+        {
+
+
+            pedidoEncontrado.setEstado("Finalizado");
+            pedidoServicio.save(pedidoEncontrado);
+
+            factura.setFecha(new Date());
+            factura.setPedido(pedido.get());
+            factura.setSubtotal(pedido.get().getTotal());
+            factura.setIva(0.12);
+            factura.setTotal((pedido.get().getTotal() * 0.12) + pedido.get().getTotal());
+            facturaServicio.save(factura);
+
+        }
+        return ResponseEntity.ok(factura);
+
+    }
 
     @PostMapping("/detalle1/create") //crear Pedido
     public ResponseEntity<List<Detalle>> createDetalle(@RequestBody CrearDetalle crearDetalle, HttpSession httpSession) {
@@ -197,39 +231,6 @@ public class PedidoControlador{
         return new ResponseEntity<List<Detalle>>(detalles, HttpStatus.OK);
     }
 
-    @PutMapping("/pedido/confirmarEntrega")
-    public ResponseEntity<Factura> createFactura(@RequestBody CreaFactura creaFactura) {
 
-
-        Optional<Pedido> pedido = pedidoServicio.findById(creaFactura.getPedido());
-
-
-        if (pedido.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        Pedido pedidoEncontrado = pedido.get();
-        Factura factura = new Factura();
-        System.out.println(pedidoEncontrado.getEstado());
-        if(pedidoEncontrado.getEstado().equals("Finalizado")){
-            System.out.println("Pedido ya fdacturado");
-        } else if (!pedidoEncontrado.getEstado().equals("Finalizado"))
-        {
-
-
-            pedidoEncontrado.setEstado("Finalizado");
-            pedidoServicio.save(pedidoEncontrado);
-
-            factura.setFecha(new Date());
-            factura.setPedido(pedido.get());
-            factura.setSubtotal(pedido.get().getTotal());
-            factura.setIva(0.12);
-            factura.setTotal((pedido.get().getTotal() * 0.12) + pedido.get().getTotal());
-            facturaServicio.save(factura);
-
-        }
-        return ResponseEntity.ok(factura);
-
-    }
 
 }
