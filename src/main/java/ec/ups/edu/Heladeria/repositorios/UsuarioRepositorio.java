@@ -20,4 +20,7 @@ public interface UsuarioRepositorio extends CrudRepository<Cliente, Long> {
     @Query("select u from Cliente u where u.correo =:correo and u.contrasenia = :contrasenia")
     Cliente getUsuarioEncontrado(String correo, String contrasenia);
 
+    @Query("select u from Cliente u where u.id = :id")
+    Cliente findUsuarioById(Long id);
+
 }
