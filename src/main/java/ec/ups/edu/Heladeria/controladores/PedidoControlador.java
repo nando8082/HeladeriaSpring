@@ -81,6 +81,46 @@ public class PedidoControlador{
         return new ResponseEntity<List<Pedido>>(listaPedidos, HttpStatus.OK);
     }
 
+    @GetMapping("/pedido/cliente/{id}") //obtener el listado de Pedidos
+    public ResponseEntity<?> getAllPedidosCliente(@PathVariable Long id, HttpSession httpSession) {
+        String v = (String) httpSession.getAttribute("Verificador");
+
+        if(v== "true"){
+            Optional<Cliente> clienteOptional = Optional.ofNullable(usuarioServicio.retrieveUsuarioById(id));
+            if(clienteOptional.isEmpty()){
+                return ResponseEntity.badRequest().build();
+            }
+            long idC = clienteOptional.get().getId();
+            List<Pedido> pedidoList = pedidoServicio.retrieveIdCliente(idC);
+            System.out.println(pedidoList);
+            return new ResponseEntity<List<Pedido>>(pedidoList, HttpStatus.OK);
+        }
+
+        return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
+    }
+
+    @GetMapping("/pedido/cliente") //obtener el listado de Pedidos
+    public ResponseEntity<?> getAllPedidosClienteDirecto(HttpSession httpSession) {
+        String v = (String) httpSession.getAttribute("Verificador");
+
+        if(v== "true"){
+            long idCl = (long) httpSession.getAttribute("idCliente");
+            Optional<Cliente> clienteOptional = Optional.ofNullable(usuarioServicio.retrieveUsuarioById(idCl));
+            if(clienteOptional.isEmpty()){
+                return ResponseEntity.badRequest().build();
+            }
+
+            long idC = clienteOptional.get().getId();
+            List<Pedido> pedidoList = pedidoServicio.retrieveIdCliente(idC);
+            System.out.println(pedidoList);
+            return new ResponseEntity<List<Pedido>>(pedidoList, HttpStatus.OK);
+        }
+
+        return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
+    }
+
+
+
     @PostMapping("/pedido/terminar")
     //crear Pedido
     public ResponseEntity<Pedido> createPedido(@RequestBody CrearPedido crearPedido, HttpSession httpSession) {
