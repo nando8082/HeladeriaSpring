@@ -26,12 +26,19 @@ public class FacturaControlador {
     }
 
     @GetMapping
-    public ResponseEntity<List<Factura>> getAllFacturas(HttpSession httpSession) {
-        long id = (long) httpSession.getAttribute("idCliente");
+    public ResponseEntity<?> getAllFacturas(HttpSession httpSession) {
 
-        List<Factura> listaFacturas = facturaServicio.findAll();
+        String v = (String) httpSession.getAttribute("Verificador");
 
-        return new ResponseEntity<List<Factura>>(listaFacturas,HttpStatus.OK);
+        if(v== "true"){
+            long id = (long) httpSession.getAttribute("idCliente");
+
+            List<Factura> listaFacturas = facturaServicio.findAll();
+
+            return new ResponseEntity<List<Factura>>(listaFacturas,HttpStatus.OK);
+        }
+
+        return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
     }
 
 

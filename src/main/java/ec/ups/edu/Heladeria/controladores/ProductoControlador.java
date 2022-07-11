@@ -7,6 +7,7 @@ import ec.ups.edu.Heladeria.servicios.CategoriaServicio;
 import ec.ups.edu.Heladeria.servicios.ProductoNoEncontradoException;
 import ec.ups.edu.Heladeria.servicios.ProductoServicios;
 import ec.ups.edu.Heladeria.servicios.SucursalServicio;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +37,15 @@ public class ProductoControlador {
     }
 
     @GetMapping("/productos")
-    public ResponseEntity<List<Producto>> getAllProductos() {
-        List<Producto> listaProductos = productoServicios.findAll();
-        return new ResponseEntity<List<Producto>>(listaProductos, HttpStatus.OK);
+    public ResponseEntity<?> getAllProductos(HttpSession httpSession) {
+        String v = (String) httpSession.getAttribute("Verificador");
+
+        if(v== "true"){
+            List<Producto> listaProductos = productoServicios.findAll();
+            return new ResponseEntity<List<Producto>>(listaProductos, HttpStatus.OK);
+        }
+
+        return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
     }
 
     @GetMapping("/productos/sucursal/{nombreS}")
