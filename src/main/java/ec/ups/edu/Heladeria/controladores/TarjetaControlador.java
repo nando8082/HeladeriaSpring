@@ -78,7 +78,7 @@ public class TarjetaControlador {
     @GetMapping("/{numTarjeta}")
     public ResponseEntity<?> getTarjetaBynumTarjeta(@PathVariable int numTarjeta){
         Optional<Tarjeta> tarjetaOptional = Optional.ofNullable(tarjetaServicio.retrieveTarjetaBynumTarjeta(numTarjeta));
-      if(tarjetaOptional.get().getNumTarjeta()<0){
+        if(tarjetaOptional.get().getNumTarjeta()<0){
           return  ResponseEntity.ok("No existe tarjeta");
       }
         return  ResponseEntity.ok(tarjetaOptional);

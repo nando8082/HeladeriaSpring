@@ -76,22 +76,22 @@ public class PedidoControlador{
 
   
     @GetMapping("/pedidos") //obtener el listado de Pedidos
-    public ResponseEntity<?> getAllPedidos(HttpSession httpSession) {
-        String v = (String) httpSession.getAttribute("Verificador");
+    public ResponseEntity<List<Pedido>> getAllPedidos(HttpSession httpSession) {
+        //String v = (String) httpSession.getAttribute("Verificador");
 
-        if(v== "true"){
+        //if(v== "true"){
             List<Pedido> listaPedidos = pedidoServicio.findAll();
             return new ResponseEntity<List<Pedido>>(listaPedidos, HttpStatus.OK);
-        }
+        //}
 
-        return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
+        //return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
     }
 
     @GetMapping("/pedido/cliente/{id}") //obtener el listado de Pedidos
-    public ResponseEntity<?> getAllPedidosCliente(@PathVariable Long id, HttpSession httpSession) {
-        String v = (String) httpSession.getAttribute("Verificador");
+    public ResponseEntity<List<Pedido>> getAllPedidosCliente(@PathVariable Long id, HttpSession httpSession) {
+        //String v = (String) httpSession.getAttribute("Verificador");
 
-        if(v== "true"){
+        //if(v== "true"){
             Optional<Cliente> clienteOptional = Optional.ofNullable(usuarioServicio.retrieveUsuarioById(id));
             if(clienteOptional.isEmpty()){
                 return ResponseEntity.badRequest().build();
@@ -100,16 +100,16 @@ public class PedidoControlador{
             List<Pedido> pedidoList = pedidoServicio.retrieveIdCliente(idC);
             System.out.println(pedidoList);
             return new ResponseEntity<List<Pedido>>(pedidoList, HttpStatus.OK);
-        }
+        //}
 
-        return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
+        //return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
     }
 
     @GetMapping("/pedido/cliente") //obtener el listado de Pedidos
-    public ResponseEntity<?> getAllPedidosClienteDirecto(HttpSession httpSession) {
-        String v = (String) httpSession.getAttribute("Verificador");
+    public ResponseEntity<List<Pedido>> getAllPedidosClienteDirecto(HttpSession httpSession) {
+        //String v = (String) httpSession.getAttribute("Verificador");
 
-        if(v== "true"){
+        //if(v== "true"){
             long idCl = (long) httpSession.getAttribute("idCliente");
             Optional<Cliente> clienteOptional = Optional.ofNullable(usuarioServicio.retrieveUsuarioById(idCl));
             if(clienteOptional.isEmpty()){
@@ -120,9 +120,9 @@ public class PedidoControlador{
             List<Pedido> pedidoList = pedidoServicio.retrieveIdCliente(idC);
             System.out.println(pedidoList);
             return new ResponseEntity<List<Pedido>>(pedidoList, HttpStatus.OK);
-        }
+        //}
 
-        return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
+        //return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
     }
 
 
