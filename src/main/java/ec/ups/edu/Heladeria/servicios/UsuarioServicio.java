@@ -48,4 +48,9 @@ public class UsuarioServicio {
         return (Cliente) usuarioRepositorio.getUsuarioEncontrado(correo,contrasenia);
     }
 
+    public Cliente retrieveUsuarioById(Long id) {
+        return (Cliente) usuarioRepositorio.findUsuarioById(id);
+    }
+
+
 }
