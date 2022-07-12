@@ -70,23 +70,29 @@ public class UsuarioControlador {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Cliente> updateUsuario(@RequestBody ActualizarUsuario actualizarUsuario){
-        Optional<Cliente> usuarioOptional = usuarioServicio.findById(actualizarUsuario.getId());
-        if(usuarioOptional.isEmpty()){
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> updateUsuario(@RequestBody ActualizarUsuario actualizarUsuario, HttpSession httpSession){
+        String v = (String) httpSession.getAttribute("Verificador");
+
+        if(v== "true"){
+            Optional<Cliente> usuarioOptional = usuarioServicio.findById(actualizarUsuario.getId());
+            if(usuarioOptional.isEmpty()){
+                return ResponseEntity.badRequest().build();
+            }
+            Cliente clienteEncontrado = usuarioOptional.get();
+            clienteEncontrado.setCedula(actualizarUsuario.getCedula());
+            clienteEncontrado.setNombre(actualizarUsuario.getNombre());
+            clienteEncontrado.setApellido(actualizarUsuario.getApellido());
+            clienteEncontrado.setCorreo(actualizarUsuario.getCorreo());
+            clienteEncontrado.setContrasenia(actualizarUsuario.getContrasenia());
+            clienteEncontrado.setTelefono(actualizarUsuario.getTelefono());
+            clienteEncontrado.setDireccion(actualizarUsuario.getDireccion());
+
+            usuarioServicio.save(clienteEncontrado);
+
+            return ResponseEntity.ok(clienteEncontrado);
         }
-        Cliente clienteEncontrado = usuarioOptional.get();
-        clienteEncontrado.setCedula(actualizarUsuario.getCedula());
-        clienteEncontrado.setNombre(actualizarUsuario.getNombre());
-        clienteEncontrado.setApellido(actualizarUsuario.getApellido());
-        clienteEncontrado.setCorreo(actualizarUsuario.getCorreo());
-        clienteEncontrado.setContrasenia(actualizarUsuario.getContrasenia());
-        clienteEncontrado.setTelefono(actualizarUsuario.getTelefono());
-        clienteEncontrado.setDireccion(actualizarUsuario.getDireccion());
 
-        usuarioServicio.save(clienteEncontrado);
-
-        return ResponseEntity.ok(clienteEncontrado);
+        return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
     }
 
 
@@ -97,9 +103,15 @@ public class UsuarioControlador {
         return ResponseEntity.ok("Usuario Eliminada Correctamente");
     }
     @GetMapping("/logout")
-    public ResponseEntity <String> cerrarS(HttpSession httpSession){
-        httpSession.setAttribute("idCliente",null);
-        System.out.println("Sesion cerrada id: "+httpSession.getAttribute("id"));
-        return ResponseEntity.ok("Cerrar Sesion correcto");
+    public ResponseEntity<?> cerrarS(HttpSession httpSession){
+        String v = (String) httpSession.getAttribute("Verificador");
+
+        if(v== "true"){
+            httpSession.setAttribute("idCliente",null);
+            System.out.println("Sesion cerrada id: "+httpSession.getAttribute("id"));
+            return ResponseEntity.ok("Cerrar Sesion correcto");
+        }
+
+        return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
     }
 }

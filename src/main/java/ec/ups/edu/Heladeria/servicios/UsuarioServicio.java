@@ -52,5 +52,4 @@ public class UsuarioServicio {
         return (Cliente) usuarioRepositorio.findUsuarioById(id);
     }
 
-
 }

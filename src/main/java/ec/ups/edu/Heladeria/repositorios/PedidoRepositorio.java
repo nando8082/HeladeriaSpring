@@ -16,4 +16,7 @@ public interface PedidoRepositorio extends CrudRepository<Pedido,Long> {
     @Query("select p  from Pedido p where p.cliente.id = :id2 and p.estado = :estado ")
     Pedido  IdClienteEstado(long id2, String estado);
 
+    @Query("select p  from Pedido p, Cliente c where p.cliente.id =:idC and c.id=:idC")
+    List<Pedido> IdCliente(long idC);
+
 }

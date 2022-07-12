@@ -8,6 +8,7 @@ import ec.ups.edu.Heladeria.servicios.DetalleServicio;
 import ec.ups.edu.Heladeria.servicios.PedidoNoEncontradoException;
 import ec.ups.edu.Heladeria.servicios.PedidoServicio;
 import ec.ups.edu.Heladeria.servicios.ProductoServicios;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,35 +43,30 @@ public class DetalleControlador {
     }
 
     @PutMapping("/detalle/agregarACarritto") //crear Pedido
-    public ResponseEntity<Detalle> createDetalle(@RequestBody CrearDetalle crearDetalle) {
+    public ResponseEntity<?> createDetalle(@RequestBody CrearDetalle crearDetalle, HttpSession httpSession) {
+        String v = (String) httpSession.getAttribute("Verificador");
 
-        Optional<Producto> producto = productoServicio.findById(crearDetalle.getIdproducto());
-        System.out.printf(String.valueOf(producto.get()));
-        if (producto.isEmpty()) {
-            return ResponseEntity.badRequest().build();
+        if(v== "true"){
+
+            Optional<Producto> producto = productoServicio.findById(crearDetalle.getIdproducto());
+            System.out.printf(String.valueOf(producto.get()));
+            if (producto.isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            Detalle detalle = new Detalle();
+
+            detalle.setCantidad(crearDetalle.getCantidad());
+            detalle.setPrecio(producto.get().getPrecio());
+            detalle.setProducto(producto.get());
+            detalle.setSubtotal(producto.get().getPrecio()*crearDetalle.getCantidad());
+
+            detalleServicio.Crear(detalle);
+
+            return ResponseEntity.ok(detalle);
         }
 
-
-
-
-
-        Detalle detalle = new Detalle();
-
-
-
-
-        detalle.setCantidad(crearDetalle.getCantidad());
-        detalle.setPrecio(producto.get().getPrecio());
-        detalle.setProducto(producto.get());
-        detalle.setSubtotal(producto.get().getPrecio()*crearDetalle.getCantidad());
-
-        detalleServicio.Crear(detalle);
-
-        return ResponseEntity.ok(detalle);
-
-
-
-
+        return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
     }
 }
 
