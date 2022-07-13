@@ -6,6 +6,7 @@ import ec.ups.edu.Heladeria.entidades.peticiones.usuario.CrearUsuario;
 import ec.ups.edu.Heladeria.entidades.peticiones.usuario.IniciarSesion;
 import ec.ups.edu.Heladeria.servicios.UsuarioNoEncontradoException;
 import ec.ups.edu.Heladeria.servicios.UsuarioServicio;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,8 @@ public class UsuarioControlador {
     }
 
     @GetMapping("/myuser")
-    public ResponseEntity<Optional<Cliente>> getAllUsuarios(HttpSession httpSession){
+    public ResponseEntity<Optional<Cliente>> getAllUsuarios(HttpSession httpSession, HttpServletRequest request){
+        httpSession = request.getSession();
         System.out.println(httpSession.getAttribute("idCliente"));
        long id = (long) httpSession.getAttribute("idCliente");
         Optional<Cliente> listaClientes = usuarioServicio.findById(id);
@@ -39,7 +41,10 @@ public class UsuarioControlador {
 
 
     @PostMapping("/iniciarSesion")
-    public ResponseEntity<Cliente> getUsuarioIiciado(@RequestBody  IniciarSesion iniciarS, HttpSession httpSession){
+    public ResponseEntity<Cliente> getUsuarioIiciado(@RequestBody  IniciarSesion iniciarS, HttpSession httpSession, HttpServletRequest request){
+        httpSession = request.getSession(true);
+
+        System.out.println("lllllllllllllll"+httpSession.getId());
 
         Optional<Cliente> usuarioOptional = Optional.ofNullable(usuarioServicio.iniciarsesion(iniciarS.getCorreo(),iniciarS.getContrasenia()));
 
