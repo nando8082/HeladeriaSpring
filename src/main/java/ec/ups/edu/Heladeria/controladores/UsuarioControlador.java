@@ -29,10 +29,11 @@ public class UsuarioControlador {
     }
 
     @GetMapping("/myuser")
-    public ResponseEntity<Optional<Cliente>> getAllUsuarios(HttpSession httpSession, HttpServletRequest request){
-        httpSession = request.getSession();
-        System.out.println(httpSession.getAttribute("idCliente"));
-       long id = (long) httpSession.getAttribute("idCliente");
+    public ResponseEntity<Optional<Cliente>> getAllUsuarios( HttpServletRequest request){
+
+     HttpSession httpSession = request.getSession(true);
+        System.out.println("myuser: "+  httpSession.getAttribute("idCliente"));
+       long id = (long)  httpSession.getAttribute("idCliente");
         Optional<Cliente> listaClientes = usuarioServicio.findById(id);
 
         return new ResponseEntity<Optional<Cliente>>(listaClientes, HttpStatus.OK);
@@ -41,8 +42,9 @@ public class UsuarioControlador {
 
 
     @PostMapping("/iniciarSesion")
-    public ResponseEntity<Cliente> getUsuarioIiciado(@RequestBody  IniciarSesion iniciarS, HttpSession httpSession, HttpServletRequest request){
-        httpSession = request.getSession(true);
+    public ResponseEntity<Cliente> getUsuarioIiciado(@RequestBody  IniciarSesion iniciarS,  HttpServletRequest request){
+        HttpSession httpSession = request.getSession(true);
+
 
         System.out.println("lllllllllllllll"+httpSession.getId());
 
@@ -54,9 +56,11 @@ public class UsuarioControlador {
             httpSession.setAttribute("Verificador", "false");
         }else{
             httpSession.setAttribute("Verificador", "true");
-            httpSession.setAttribute("idCliente",usuarioOptional.get().getId());
+           // request.setAttribute("idCliente", usuarioOptional.get().getId());
+            httpSession.setAttribute("idCliente", usuarioOptional.get().getId());
+         //   httpSession.setAttribute("idCliente",usuarioOptional.get().getId());
             System.out.println("CorrectoLogin");
-            System.out.println(httpSession.getAttribute("idCliente"));
+            System.out.println("ini "+httpSession.getAttribute("idCliente"));
         }
 
         Cliente cliente = usuarioOptional.orElseThrow(UsuarioNoEncontradoException::new);
