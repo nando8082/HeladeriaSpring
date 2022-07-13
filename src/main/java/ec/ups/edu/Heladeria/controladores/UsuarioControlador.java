@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("usuario")
 public class UsuarioControlador {
@@ -28,6 +29,7 @@ public class UsuarioControlador {
 
     @GetMapping("/myuser")
     public ResponseEntity<Optional<Cliente>> getAllUsuarios(HttpSession httpSession){
+        System.out.println(httpSession.getAttribute("idCliente"));
        long id = (long) httpSession.getAttribute("idCliente");
         Optional<Cliente> listaClientes = usuarioServicio.findById(id);
 
@@ -36,7 +38,7 @@ public class UsuarioControlador {
 
 
 
-    @GetMapping("/iniciarSesion")
+    @PostMapping("/iniciarSesion")
     public ResponseEntity<Cliente> getUsuarioIiciado(@RequestBody  IniciarSesion iniciarS, HttpSession httpSession){
 
         Optional<Cliente> usuarioOptional = Optional.ofNullable(usuarioServicio.iniciarsesion(iniciarS.getCorreo(),iniciarS.getContrasenia()));
@@ -49,6 +51,7 @@ public class UsuarioControlador {
             httpSession.setAttribute("Verificador", "true");
             httpSession.setAttribute("idCliente",usuarioOptional.get().getId());
             System.out.println("CorrectoLogin");
+            System.out.println(httpSession.getAttribute("idCliente"));
         }
 
         Cliente cliente = usuarioOptional.orElseThrow(UsuarioNoEncontradoException::new);
@@ -114,4 +117,13 @@ public class UsuarioControlador {
 
         return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
     }
+
+
+    @GetMapping
+    public ResponseEntity<List<Cliente>> getAllPersonas(){
+        List<Cliente> listaPersonas = usuarioServicio.findAll();
+
+        return new ResponseEntity<List<Cliente>>(listaPersonas, HttpStatus.OK);
+    }
+
 }
