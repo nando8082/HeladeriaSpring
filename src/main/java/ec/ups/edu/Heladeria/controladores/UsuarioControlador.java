@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class UsuarioControlador {
     public ResponseEntity<Optional<Cliente>> getAllUsuarios( HttpServletRequest request){
 
      HttpSession httpSession = request.getSession(true);
-        System.out.println("myuser: "+  httpSession.getAttribute("idCliente"));
+        System.out.println("myuser: "+  httpSession.getAttribute("idCliente")); 
        long id = (long)  httpSession.getAttribute("idCliente");
         Optional<Cliente> listaClientes = usuarioServicio.findById(id);
 
@@ -134,5 +135,9 @@ public class UsuarioControlador {
 
         return new ResponseEntity<List<Cliente>>(listaPersonas, HttpStatus.OK);
     }
+
+    @GetMapping("/myUser/{id}")
+    public ResponseEntity<?>
+
 
 }

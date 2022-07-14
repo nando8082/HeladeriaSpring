@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("tarjeta")
 public class TarjetaControlador {
@@ -28,7 +29,7 @@ public class TarjetaControlador {
     private UsuarioServicio usuarioServicio;
 
     @Autowired
-    public void setTarjetaServicio(TarjetaServicio tarjetaServicio){
+    public void setTarjetaServicio(TarjetaServicio tarjetaServicio) {
         this.tarjetaServicio = tarjetaServicio;
     }
 
@@ -40,56 +41,55 @@ public class TarjetaControlador {
 
     //Crear Tarjeta
     @PostMapping("/create")
-    public ResponseEntity<?> createTarjeta(@RequestBody CrearTarjeta crearTarjeta, HttpSession httpSession){
+    public ResponseEntity<?> createTarjeta(@RequestBody CrearTarjeta crearTarjeta, HttpSession httpSession) {
         String v = (String) httpSession.getAttribute("Verificador");
         System.out.println(v);
 
 
-        if(v== "true"){
+        if (v == "true") {
 
-        long id = (long) httpSession.getAttribute("idCliente");
-        Optional<Cliente> usuario = usuarioServicio.findById(id);
+            long id = (long) httpSession.getAttribute("idCliente");
+            Optional<Cliente> usuario = usuarioServicio.findById(id);
 
 
-        if (usuario.isEmpty()){
-            return ResponseEntity.badRequest().build();
+            if (usuario.isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            Tarjeta tarjeta = new Tarjeta();
+            tarjeta.setNombreTitular(crearTarjeta.getNombreTitular());
+            tarjeta.setNumTarjeta(crearTarjeta.getNumTarjeta());
+            tarjeta.setFechaCducidad(crearTarjeta.getFechaCducidad());
+            tarjeta.setCodigoCvv(crearTarjeta.getCodigoCvv());
+            tarjeta.setTipo(crearTarjeta.getTipo());
+            tarjeta.setUsuario(usuario.get());
+
+            tarjetaServicio.save(tarjeta);
+
+            return ResponseEntity.ok(tarjeta);
+
         }
 
-        Tarjeta tarjeta = new Tarjeta();
-        tarjeta.setNombreTitular(crearTarjeta.getNombreTitular());
-        tarjeta.setNumTarjeta(crearTarjeta.getNumTarjeta());
-        tarjeta.setFechaCducidad(crearTarjeta.getFechaCducidad());
-        tarjeta.setCodigoCvv(crearTarjeta.getCodigoCvv());
-        tarjeta.setTipo(crearTarjeta.getTipo());
-        tarjeta.setUsuario(usuario.get());
-
-        tarjetaServicio.save(tarjeta);
-
-       return   ResponseEntity.ok(tarjeta);
-
-        }
-
-        return  ResponseEntity.badRequest().body("NO HA INICIADO SESION");
+        return ResponseEntity.badRequest().body("NO HA INICIADO SESION");
 
     }
 
     //Buscar por número de tarjeta
 
     @GetMapping("/{numTarjeta}")
-    public ResponseEntity<?> getTarjetaBynumTarjeta(@PathVariable int numTarjeta){
+    public ResponseEntity<?> getTarjetaBynumTarjeta(@PathVariable int numTarjeta) {
         Optional<Tarjeta> tarjetaOptional = Optional.ofNullable(tarjetaServicio.retrieveTarjetaBynumTarjeta(numTarjeta));
-        if(tarjetaOptional.get().getNumTarjeta()<0){
-          return  ResponseEntity.ok("No existe tarjeta");
-      }
-        return  ResponseEntity.ok(tarjetaOptional);
+        if (tarjetaOptional.get().getNumTarjeta() < 0) {
+            return ResponseEntity.ok("No existe tarjeta");
+        }
+        return ResponseEntity.ok(tarjetaOptional);
     }
 
     //Listar todas las tarjetas
 
 
-
     @GetMapping("/myCards")
-    public ResponseEntity<List<Tarjeta>> getTarjetasUser(HttpSession httpSession){
+    public ResponseEntity<List<Tarjeta>> getTarjetasUser(HttpSession httpSession) {
         long id = (long) httpSession.getAttribute("idCliente");
         System.out.println(id);
         List<Tarjeta> listadoTarjetas = tarjetaServicio.retrieveTarjetas(id);
@@ -99,19 +99,19 @@ public class TarjetaControlador {
 
 
     //Eliminar Tarjeta
-    @DeleteMapping("/delete/{numTarjeta}")
-    public ResponseEntity<String> deleteTarjeta(@PathVariable int numTarjeta){
-        tarjetaServicio.delete(numTarjeta);
+   // @DeleteMapping("/delete/{numTarjeta}")
+  //  public ResponseEntity<String> deleteTarjeta(@PathVariable int numTarjeta) {
+  //      tarjetaServicio.delete(numTarjeta);
 
-        return ResponseEntity.ok("Tarjeta Eliminada Correctamente");
-    }
+  //      return ResponseEntity.ok("Tarjeta Eliminada Correctamente");
+ //   }
 
     //Actualizar Tarjeta
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateTarjeta(@RequestBody ActualizarTarjeta actualizarTarjeta){
+    public ResponseEntity<?> updateTarjeta(@RequestBody ActualizarTarjeta actualizarTarjeta) {
         Optional<Tarjeta> tarjetaOptional = tarjetaServicio.findById(actualizarTarjeta.getId());
-        if(tarjetaOptional.isEmpty()){
+        if (tarjetaOptional.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
         Tarjeta tarjetaEncontrada = tarjetaOptional.get();
@@ -125,6 +125,25 @@ public class TarjetaControlador {
 
         return ResponseEntity.ok(tarjetaEncontrada);
     }
+
+    @GetMapping
+    public ResponseEntity<List<Tarjeta>> getAllTarjetas() {
+        List<Tarjeta> listaTarjetas = tarjetaServicio.findAll();
+
+        return new ResponseEntity<List<Tarjeta>>(listaTarjetas, HttpStatus.OK);
+    }
+
+    @PostMapping("/crear")
+    public Tarjeta createTarjeta(@RequestBody Tarjeta tarjeta){
+
+        return tarjetaServicio.save(tarjeta);
+    }
+
+    @DeleteMapping("/eliminar/{id}")
+    public void eliminar(@PathVariable Long id){
+        tarjetaServicio.delete(id);
+    }
+
 
 
 }
