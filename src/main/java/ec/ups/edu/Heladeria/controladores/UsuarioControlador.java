@@ -46,7 +46,7 @@ public class UsuarioControlador {
     public ResponseEntity<Cliente> getUsuarioIiciado(@RequestBody  IniciarSesion iniciarS,  HttpServletRequest request){
         HttpSession httpSession = request.getSession(true);
 
-
+       httpSession.setMaxInactiveInterval(1800);
         System.out.println("lllllllllllllll"+httpSession.getId());
 
         Optional<Cliente> usuarioOptional = Optional.ofNullable(usuarioServicio.iniciarsesion(iniciarS.getCorreo(),iniciarS.getContrasenia()));
