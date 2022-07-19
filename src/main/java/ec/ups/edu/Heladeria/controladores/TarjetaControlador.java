@@ -133,11 +133,11 @@ public class TarjetaControlador {
         return new ResponseEntity<List<Tarjeta>>(listaTarjetas, HttpStatus.OK);
     }
 
-    @PostMapping("/crear")
-    public Tarjeta createTarjeta(@RequestBody Tarjeta tarjeta){
+    //@PostMapping("/crear")
+    //public Tarjeta createTarjeta(@RequestBody Tarjeta tarjeta){
 
-        return tarjetaServicio.save(tarjeta);
-    }
+    //    return tarjetaServicio.save(tarjeta);
+    //}
 
     @DeleteMapping("/eliminar/{id}")
     public void eliminar(@PathVariable Long id){
@@ -145,5 +145,91 @@ public class TarjetaControlador {
     }
 
 
+    @PostMapping("/crear")
+    public ResponseEntity<?> crearTarjeta(@RequestBody CrearTarjeta crearTarjeta) {
+        //String v = (String) httpSession.getAttribute("Verificador");
+        //System.out.println(v);
+
+
+        //if (v == "true") {
+
+            //long id = (long) httpSession.getAttribute("idCliente");
+            //Optional<Cliente> usuario = usuarioServicio.findById(crearTarjeta.getIdUsuario());
+            //System.out.println(usuario.get());
+
+            //if (usuario.isEmpty()) {
+             //   return ResponseEntity.badRequest().build();
+            //}
+
+            Tarjeta tarjeta = new Tarjeta();
+            tarjeta.setNombreTitular(crearTarjeta.getNombreTitular());
+            tarjeta.setNumTarjeta(crearTarjeta.getNumTarjeta());
+            tarjeta.setFechaCducidad(crearTarjeta.getFechaCducidad());
+            tarjeta.setCodigoCvv(crearTarjeta.getCodigoCvv());
+            tarjeta.setTipo(crearTarjeta.getTipo());
+            //tarjeta.setUsuario(usuario.get());
+
+            System.out.println(crearTarjeta.getIdUsuario());
+            tarjetaServicio.save(tarjeta);
+
+            return ResponseEntity.ok(tarjeta);
+
+        }
+
+        //return ResponseEntity.badRequest().body("NO HA INICIADO SESION");
+
+    //}
+
+    @PutMapping("/actualizar")
+    public ResponseEntity<?> actualizarTarjeta(@RequestBody ActualizarTarjeta actualizarTarjeta) {
+        Optional<Tarjeta> tarjetaOptional = tarjetaServicio.findById(actualizarTarjeta.getId());
+        if (tarjetaOptional.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        Tarjeta tarjetaEncontrada = tarjetaOptional.get();
+        tarjetaEncontrada.setNombreTitular(actualizarTarjeta.getNombreTitular());
+        tarjetaEncontrada.setNumTarjeta(actualizarTarjeta.getNumTarjeta());
+        tarjetaEncontrada.setFechaCducidad(actualizarTarjeta.getFechaCducidad());
+        tarjetaEncontrada.setCodigoCvv(actualizarTarjeta.getCodigoCvv());
+        tarjetaEncontrada.setTipo(actualizarTarjeta.getTipo());
+
+        tarjetaServicio.save(tarjetaEncontrada);
+
+        return ResponseEntity.ok(tarjetaEncontrada);
+    }
+
+    @GetMapping("/myCards1/{id}")
+    public ResponseEntity<List<Tarjeta>> getTarjetasUser( @PathVariable long id){
+        System.out.println(id);
+        List<Tarjeta> listadoTarjetas = tarjetaServicio.retrieveTarjetas(id);
+
+        return new ResponseEntity<List<Tarjeta>>(listadoTarjetas, HttpStatus.OK);
+    }
+
+    @PostMapping("/crearT")
+    public ResponseEntity<?> createTarjeta(@RequestBody CrearTarjeta crearTarjeta){
+        //String v = (String) httpSession.getAttribute("Verificador");
+
+        //System.out.println(crearTarjeta.getIdUsuario());
+        Optional<Cliente> usuario = usuarioServicio.findById(crearTarjeta.getIdUsuario());
+        System.out.println(usuario.get());
+
+        if (usuario.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+
+        Tarjeta tarjeta = new Tarjeta();
+        tarjeta.setNombreTitular(crearTarjeta.getNombreTitular());
+        tarjeta.setNumTarjeta(crearTarjeta.getNumTarjeta());
+        tarjeta.setFechaCducidad(crearTarjeta.getFechaCducidad());
+        tarjeta.setCodigoCvv(crearTarjeta.getCodigoCvv());
+        tarjeta.setTipo(crearTarjeta.getTipo());
+        tarjeta.setUsuario(usuario.get());
+
+        tarjetaServicio.save(tarjeta);
+
+        return   ResponseEntity.ok(tarjeta);
+
+    }
 
 }

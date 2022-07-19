@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,6 +114,7 @@ public class UsuarioControlador {
 
         return ResponseEntity.ok("Usuario Eliminada Correctamente");
     }
+
     @GetMapping("/logout")
     public ResponseEntity<?> cerrarS(HttpSession httpSession){
         String v = (String) httpSession.getAttribute("Verificador");
@@ -137,7 +137,11 @@ public class UsuarioControlador {
     }
 
     @GetMapping("/myUser/{id}")
-    public ResponseEntity<?>
+    public ResponseEntity<Optional<Cliente>> obtenerUsuario(@PathVariable long id){
+        Optional<Cliente> cliente = usuarioServicio.findById(id);
+        System.out.println(cliente);
+        return new ResponseEntity<Optional<Cliente>>(cliente, HttpStatus.OK);
+    }
 
 
 }
