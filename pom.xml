@@ -15,6 +15,7 @@
 	<description>Aplicacion para Heladeria</description>
 	<properties>
 		<java.version>18</java.version>
+		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -53,6 +54,13 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-archetype-plugin</artifactId>
+				<version>3.2.1</version>
+			</plugin>
+
 		</plugins>
 	</build>
 	<repositories>
